@@ -14,7 +14,7 @@ const MenuProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   });
 
   const { mutate: createMenuHttp } = useMutate({
-    path: 'https://localhost:44311/api/services/app/createMenuHttp',
+    path: 'MenuService/CreateMenu',
     verb: 'POST',
   });
 

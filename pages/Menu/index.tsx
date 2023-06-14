@@ -12,6 +12,8 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme, Col, Divider, Row, Card, Button, Modal, Form, Input } from 'antd';
+import { IMenu } from '../../Providers/Menu/context';
+import { Console } from 'console';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -66,8 +68,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     menusAction();
+    console.log('menu stste',MenuState)
   }, []);
-
+  console.log('menu stste',MenuState);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -120,16 +123,16 @@ const App: React.FC = () => {
               <Divider orientation="left">Menu List</Divider>
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Button type="primary" onClick={handleButtonClick}>Add Menu</Button>
-                {MenuState.map((a, index) =>
+                {MenuState?.map((a, index) =>
                   <Card
                     hoverable
                     className={styles.MenuContainer}
-                    cover={<img alt="example" src={a.imagerUrl} />}
+                    cover={<img alt="example" src={a?.imagerUrl} />}
                     key={index}
                     onClick={() => handleMenuClick(a.id)}
                   >
-                    <Meta title='Menu Type' description={a.type.toString()} />
-                    <Meta title='ServingTime' description={a.servingTime.toString()} />
+                    <Meta title='Menu Type' description={a?.type} />
+                    <Meta title='ServingTime' description={a?.servingTime} />
                   </Card>
                 )}
               </Row>

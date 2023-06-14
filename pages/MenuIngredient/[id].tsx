@@ -1,10 +1,15 @@
-import React from 'react';
-import { Breadcrumb, Card, Layout, Menu, theme,Image } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Breadcrumb, Card, Layout, Menu, theme,Image, Button, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useGet } from 'restful-react';
 import styles from './styles.module.css';
 import Meta from 'antd/es/card/Meta';
 import { useMenu } from '../../Providers/Menu';
+import MenuDropdown from '../../components/IngredientsList/ingredient';
+import {DeleteOutlined} from '@ant-design/icons';
+import { IMenuIngredient, MenuIngredientActionContext } from '../../Providers/MenuIngredients/context';
+import { useMenuIngredient } from '../../Providers/MenuIngredients/index[id]';
+
 const { Header, Content, Footer } = Layout;
 const { Item} = Menu;
 
@@ -17,25 +22,30 @@ interface Ingredient
 }
 const MenuIngredient: React.FC = () => {
   const{menusAction,MenuState} = useMenu();
-    const router = useRouter();
-    const { id } = router.query;
-    // fetch
-    const { data: menuIngredientResult ,loading} = useGet({
-        path: `MenuService/GetMenuWithIngredientsById?menuId=${id}`,
-      });
-      var filteredMenu = MenuState.find(a=>a.id ==id); 
-    
+  const [filteredMenuIngredients,setFilteredMenuIngredients] = useState<Ingredient[]>()
+  const{menuIngredientAction,MenuIngredientState,createMenuIngredient} = useMenuIngredient();  
+  useEffect(() => {
+    menuIngredientAction('d592360f-f7e5-45c3-df00-08db6b3741f1');
+    setFilteredMenuIngredients(MenuIngredientState);
+    console.log('menu state',MenuState)
+    console.log('filtered menu Ingredient state',filteredMenuIngredients)
+  }, [filteredMenuIngredients]);
+  
+  const router = useRouter();
+  const { id } = router.query;
+      var filteredMenu = MenuState.find(a=>a.id == id); 
+      
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   var menuIngredientList : Ingredient[];
-  if(loading)
-  {
-    return (<p>loading..</p>)
-  }else{
-    menuIngredientList = menuIngredientResult.result;
-    console.log('data',menuIngredientResult.result)
-  }
+
+  //function calls
+  const handleDeleteClick = (id) => {
+    // Handle the click event for the delete icon
+    console.log('id is',id)
+    message.success('dummy Delete Clickedwith id: '+ id);
+  };
 
   return (
     <Layout className="layout">
@@ -55,27 +65,32 @@ const MenuIngredient: React.FC = () => {
         </Breadcrumb>
 
       </Header>
-      
+      {/* {MenuIngredientState && .map(a=><h1>{a.ingredientId}</h1>)} */}
       <Content className={styles.ContentContainer}>
        
         <div className={styles.divLeft}>
-           <h1 className={styles.h1}>{filteredMenu.name}</h1>
+           <h1 className={styles.h1}>{filteredMenu?.name}</h1>
            {/* <h2>aDD (aDD,REMOVE INGREDIENT)</h2> */}
            <Image
            className={styles.imageContainer}
-           src={filteredMenu.imagerUrl}/>
+           src={filteredMenu?.imagerUrl}/>
         </div>
 
         <div className={styles.divRight}>
-         {menuIngredientList?.map((a,index) => 
-      
+        {/* <Button type="primary" >Add Ingredient</Button> */}
+        <MenuDropdown recvievedMenuId  = {id} />
+         {filteredMenuIngredients?.map((a,index) => 
         <Card  hoverable
           className={styles.MenuContainer}
            cover={<img alt="example" src= {null} />}
            key={index}
-           onClick={() => (a.id)}
+          //  onClick={() => (a?.ingredientId)
+          // }
          >
-           <Meta title={a.name} description={a.id}/>
+           <Meta title={a?.name} description={a?.Group }/>
+           <span onClick={() => handleDeleteClick(a.id)}>
+              <DeleteOutlined />
+            </span>
        </Card>
         )}
         </div>

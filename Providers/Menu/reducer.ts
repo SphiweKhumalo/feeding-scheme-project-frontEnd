@@ -8,10 +8,11 @@ export function MenuReducer(incomingState: IMenuStateContext,action: ReduxAction
     switch(type)
     {
         case MenuActionEnum.fetchMenuRequest: 
-            return {...incomingState,...payload}
+        return {...incomingState,...payload}
             case MenuActionEnum.createMenuRequest: 
-            return {...incomingState,...payload}
+            return {...incomingState,MenuState:[payload.MenuCreated,...incomingState?.MenuState]}
         default:
             return incomingState;
     }
-}
+}   
+        // return { ...incomingState, FetchStateMovies:[payload.CreatedStateMovie,...incomingState?.FetchStateMovies]};

@@ -4,14 +4,15 @@ import { createContext } from 'react';
 
 
 export interface IMenu{
-    id :string;
+    id?:string;
     name : string;
-    Day :number;
+    day :number;
     imagerUrl:string;
     servingTime : number;
     type : number;
     quantity: number;
   }
+
 export interface IMenuStateContext {
     readonly MenuState? : IMenu[];
     readonly MenuCreated?: IMenu;
