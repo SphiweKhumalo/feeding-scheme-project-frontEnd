@@ -15,6 +15,7 @@ export const INITIAL_STATE : IMenuIngredientStateContext = {MenuIngredientState:
 export interface IMenuIngredientActionContext {
     menuIngredientAction?: (payload:string) => void;
     createMenuIngredient? : (payload:IMenuIngredient) =>void;
+    deleteMenuIngredient? : (payload:string) =>void;
 }
 
 const MenuIngredientContext = createContext<IMenuIngredientStateContext>(INITIAL_STATE);

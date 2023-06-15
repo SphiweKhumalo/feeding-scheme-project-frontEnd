@@ -10,7 +10,9 @@ export function MenuReducer(incomingState: IMenuStateContext,action: ReduxAction
         case MenuActionEnum.fetchMenuRequest: 
         return {...incomingState,...payload}
             case MenuActionEnum.createMenuRequest: 
-            return {...incomingState,MenuState:[payload.MenuCreated,...incomingState?.MenuState]}
+            // return {...incomingState,MenuState:[payload.MenuCreated,...incomingState?.MenuState]}
+            return { ...incomingState, MenuState:[payload.MenuCreated,...incomingState?.MenuState]};
+
         default:
             return incomingState;
     }

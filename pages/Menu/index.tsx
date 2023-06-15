@@ -37,7 +37,7 @@ function getItem(
 interface menu {
   id: string;
   name: string;
-  imagerUrl: string;
+  imageUrl: string;
   servingTime: string;
   type: number;
 }
@@ -97,7 +97,6 @@ const App: React.FC = () => {
     console.log('Received values of form: ', values);
     if (createMenu) {
       createMenu(values);
-        console.log(createMenu);
         // Redirect to moviesTable after successful registration
         // router.push('/moviesTable');
     } else {
@@ -127,11 +126,11 @@ const App: React.FC = () => {
                   <Card
                     hoverable
                     className={styles.MenuContainer}
-                    cover={<img alt="example" src={a?.imagerUrl} />}
+                    cover={<img alt="example" src={a?.imageUrl} />}
                     key={index}
                     onClick={() => handleMenuClick(a.id)}
                   >
-                    <Meta title='Menu Type' description={a?.type} />
+                    <Meta title={a.name} description={a?.type} />
                     <Meta title='ServingTime' description={a?.servingTime} />
                   </Card>
                 )}

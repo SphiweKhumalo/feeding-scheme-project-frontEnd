@@ -7,7 +7,7 @@ export interface IMenu{
     id?:string;
     name : string;
     day :number;
-    imagerUrl:string;
+    imageUrl?:string;
     servingTime : number;
     type : number;
     quantity: number;

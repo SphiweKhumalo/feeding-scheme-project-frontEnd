@@ -1,0 +1,34 @@
+.MenuContainer
+{
+    width: 200px;
+    margin: 3rem;
+    border: 2px solid green;
+}
+
+.ContentContainer{
+     padding: '50px 50px' ;
+     display: flex;
+     flex-direction: row;
+}
+.divLeft{
+border: 2px solid red;
+width:47rem;
+}
+.divRight {
+    padding: 2rem;
+    border: 2px solid rgb(0, 38, 255);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+  }
+  
+.imageContainer
+{
+    width:400px;
+}
+
+.h1
+{
+    font-size: 3rem;
+}
+

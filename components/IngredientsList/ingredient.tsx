@@ -11,7 +11,7 @@ const { Option } = Select;
   });
 interface IMenuIngredient
 {
-  ingredientId:String;
+  ingredientId:string;
    menuId:string;
    quantityPerServing:number;
 } 
