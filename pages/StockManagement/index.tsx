@@ -9,7 +9,11 @@ import MenuDropdown from '../../components/IngredientsList/ingredient';
 import {DeleteOutlined} from '@ant-design/icons';
 import { IMenuIngredient, MenuIngredientActionContext } from '../../Providers/MenuIngredients/context';
 import { useMenuIngredient } from '../../Providers/MenuIngredients/index[id]';
-import BatchTable from '../../components/StockManagement/batchTable';
+import BatchTable from '../../components/StockManagement/depletingStock/DepletingBatch';
+import MyChartComponent from '../../components/StockManagement/batchTable';
+import BarChart from '../../components/StockManagement/batchTable';
+import BatchInformation from '../../components/StockManagement/batchTable';
+import Piechart from '../../components/StockManagement/pieChart';
 
 const { Header, Content, Footer } = Layout;
 const { Item} = Menu;
@@ -21,7 +25,7 @@ interface Ingredient
     Group: string;
 
 }
-const BatchInformation: React.FC = () => {
+const StockManagement: React.FC = () => {
 
   const router = useRouter();
   const { id } = router.query;
@@ -59,12 +63,14 @@ const BatchInformation: React.FC = () => {
       <Content className={styles.ContentContainer}>
        
         <div className={styles.divLeft}>
+        <h1>Depleting Batches</h1>
            <BatchTable />
         </div>
 
         <div className={styles.divRight}>
-        
-      
+          <h1>Fresh Stock Levels</h1>
+            {/* <BatchInformation /> */}
+            <Piechart />
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
@@ -72,4 +78,4 @@ const BatchInformation: React.FC = () => {
   );
 };
 
-export default BatchInformation;
+export default StockManagement;

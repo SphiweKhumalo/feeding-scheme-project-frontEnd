@@ -1,0 +1,33 @@
+.batchCard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 -8px;
+  }
+  
+  .batchCard-list {
+    width: 100%;
+    padding: 0 8px;
+  }
+  
+  .batchCard-item {
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .batchCard-info {
+    margin-top: 16px;
+  }
+  
+  .batchCard-totalQuantity {
+    font-weight: bold;
+    margin-top: 8px;
+  }
+  
+  .depletingP {
+    color: red;
+  }
+  

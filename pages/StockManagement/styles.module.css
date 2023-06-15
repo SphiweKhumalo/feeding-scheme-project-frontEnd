@@ -7,20 +7,21 @@
 
 .ContentContainer{
      padding: '50px 50px' ;
-     display: flex;
-     flex-direction: row;
+     /* display: flex;
+     flex-direction: row; */
 }
-.divLeft{
-border: 2px solid red;
-width:47rem;
-}
+.divLeft {
+    border: 2px solid red;
+    width: 100%;
+    padding:6rem;
+
+  }
+  
 .divRight {
     padding: 2rem;
     border: 2px solid rgb(0, 38, 255);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
-  }
+    width: 100%;
+}
   
 .imageContainer
 {

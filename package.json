@@ -7,11 +7,14 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@ant-design/pro-components": "^2.5.10",
     "@types/redux-actions": "^2.6.2",
     "antd": "^5.6.1",
     "axios": "^1.4.0",
+    "chart.js": "^4.3.0",
     "next": "latest",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "redux-actions": "^3.0.0",
     "restful-react": "^15.9.4"

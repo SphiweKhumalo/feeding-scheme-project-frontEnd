@@ -69,19 +69,6 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   };
 
   const deleteMenuIngredient = async (payload) => {
-    // try {
-    //   const response = await deleteMenuIngredientHttp(id);
-    //   if(response.success)
-    //   {
-    //     dispatch(deleteMenuIngredientRequestAction(id));
-    //     message.success("MenuIngredient deleted successfully");
-    //   } else {
-    //   message.error('Failed to delete MenuIngredient');
-    // }
-    // } catch (error) {
-    //   console.error("Menu ingredient deletion error:", error);
-    //   message.error("An error occurred during menu ingredient deletion");
-    // }
     axios.delete(`https://localhost:44311/api/services/app/MenuIngredientService/DeleteMenuIngredient?menuId=${id}&ingredientId=${payload}`)
     .then(res => 
       {
