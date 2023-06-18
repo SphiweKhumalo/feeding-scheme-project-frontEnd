@@ -1,45 +1,38 @@
-import { Select, message } from 'antd';
+import { Select, Button, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useGet, useMutate } from 'restful-react';
+import { useMenuIngredient } from '../../MenuIngredients-copy-original';
 
 const { Option } = Select;
-  const MenuDropdown = ({recvievedMenuId} ) => {
+
+const MenuDropdown = ({ recvievedMenuId }) => {
   const [menuItems, setMenuItems] = useState([]);
+  const{MenuIngredientState}=useMenuIngredient();
+  const [selectedValue, setSelectedValue] = useState(null); // Add selectedValue state
   const { mutate: createMenuIngredientHttp } = useMutate({
     path: 'MenuIngredientService/CreateMenuIngredient',
     verb: 'POST',
   });
-interface IMenuIngredient
-{
-  ingredientId:string;
-   menuId:string;
-   quantityPerServing:number;
-} 
 
-  ///Api function calls
   const addMenuIngredient = async (payload) => {
-    console.log(payload);
-   var ingredientMenu : IMenuIngredient = 
-   {
-     ingredientId: payload,
-     menuId: recvievedMenuId,
-     quantityPerServing:3 
-   }
-    console.log("create menuIngredients vzalues",ingredientMenu);
+    var ingredientMenu = {
+      ingredientId: payload,
+      menuId: recvievedMenuId,
+      quantityPerServing: 3,
+    };
     try {
-      console.log("CREATING  Menu");
+      console.log("Creating Menu Ingredient:", ingredientMenu);
       const response = await createMenuIngredientHttp(ingredientMenu);
-      console.log("response::", response.error);
+      console.log("Response:", response);
       if (response.success) {
-        message.success("User successfully created");
-
-        // push('/login'); // Redirect to the login form
+        message.success('Ingredient added successfully');
+        // Do something after successfully adding the ingredient
       } else {
-        message.error("Failed to create Menu");
+        message.error('Failed to add ingredient');
       }
     } catch (error) {
-      console.error("Menu creation error:", error);
-      message.error("An error occurred during menu creation");
+      console.error('Ingredient addition error:', error);
+      message.error('Ingredient is already added to menu');
     }
   };
 
@@ -53,21 +46,31 @@ interface IMenuIngredient
     }
   }, [menuData]);
 
-  const handleItemClick = (menuItem) => {
-    // Handle the click event for a menu item
-    console.log('Clicked:', menuItem);      
+  const handleSubmit = () => {
+    if (selectedValue) { // Check if a value is selected
+      addMenuIngredient(selectedValue);
+    } else {
+      message.error('Please select an ingredient');
+    }
+  };
+
+  const handleSelectChange = (value) => {
+    setSelectedValue(value); // Update selectedValue state
   };
 
   return (
     <div>
-    <Select onChange={addMenuIngredient} placeholder="Select a menu item">
-      {menuItems.map((menuItem) => (
-        <Option key={menuItem.id} value={menuItem.id}>
-          {menuItem.name}
-        </Option>
-      ))}
-    </Select>
-  </div>
+      <Select id="menuSelect" placeholder="Select a menu item" onChange={handleSelectChange} value={selectedValue}>
+        {menuItems.map((menuItem) => (
+          <Option key={menuItem.id} value={menuItem.id}>
+            {menuItem.name}
+          </Option>
+        ))}
+      </Select>
+      <Button type="primary" onClick={handleSubmit}>
+        Add Ingredient
+      </Button>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, message } from 'antd';
 import { useGet } from 'restful-react';
-import styles from './styles.module.css'
+import styles from './styles.module.css';
 
 interface BatchCardProps {}
 
@@ -22,7 +22,7 @@ interface BatchInformation {
 
 const DepletingBatch: React.FC<BatchCardProps> = () => {
   const [dataSource, setDataSource] = useState<BatchItem[]>([]);
-  const { data: apiData, loading, error } = useGet<any[]>({
+  const { data: apiData, loading, error } = useGet({
     path: 'BatchInformationService/DepletingStock'
   });
 
@@ -87,7 +87,7 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
       }
     },
     {
-      title: 'Total Quantity',
+      title: 'Total Quantity Expiring',
       key: 'totalQuantity',
       render: (text, record) => {
         const totalQuantity = record.batchInformation.reduce(

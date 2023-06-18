@@ -14,6 +14,8 @@ import MyChartComponent from '../../components/StockManagement/batchTable';
 import BarChart from '../../components/StockManagement/batchTable';
 import BatchInformation from '../../components/StockManagement/batchTable';
 import Piechart from '../../components/StockManagement/pieChart';
+import AddBatchPopup from '../../components/StockManagement/Add Batch/AddBatch';
+// import { useBatchInformation } from '../../Providers/BatchInformation';
 
 const { Header, Content, Footer } = Layout;
 const { Item} = Menu;
@@ -26,19 +28,37 @@ interface Ingredient
 
 }
 const StockManagement: React.FC = () => {
-
+  // const{BatchInformationState,getBatchInformationAction} = useBatchInformation();
+  const [popupVisible, setPopupVisible] = useState(false);
   const router = useRouter();
   const { id } = router.query;
       
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
+useEffect(() =>
+{
+  // getBatchInformationAction()
+  // console.log('batch state',BatchInformationState);
+},[])
   //function calls
   const handleDeleteClick = (id) => {
     // Handle the click event for the delete icon
     console.log('id is',id)
     message.success('dummy Delete Clickedwith id: '+ id);
+  };
+
+  const handleOpenPopup = () => {
+    setPopupVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupVisible(false);
+  };
+
+  const handleFormSubmit = (data: FormData) => {
+    // Handle API submission logic here
+    console.log(data);
   };
 
   return (
@@ -64,6 +84,8 @@ const StockManagement: React.FC = () => {
        
         <div className={styles.divLeft}>
         <h1>Depleting Batches</h1>
+        <button onClick={handleOpenPopup}>Open Popup</button>
+      <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} />
            <BatchTable />
         </div>
 
