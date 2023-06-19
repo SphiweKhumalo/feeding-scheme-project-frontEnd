@@ -2,7 +2,8 @@ import { createContext } from 'react';
 
 export interface IMenuIngredient{
   menuId:string;
-  ingredientId:string
+  ingredientId:string;
+  quantityPerServing:number;
   }
 
 export interface IMenuIngredientStateContext {

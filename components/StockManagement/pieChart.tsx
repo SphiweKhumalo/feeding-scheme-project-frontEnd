@@ -9,6 +9,7 @@ import { LogoutOutlined } from "@ant-design/icons";
 import { ProCard, StatisticCard } from '@ant-design/pro-components';
 import RcResizeObserver from 'rc-resize-observer';
 import { useGet } from "restful-react";
+import { Router, useRouter } from "next/router";
 
 const { Header, Content, Footer } = Layout;
 
@@ -17,6 +18,8 @@ const { Statistic } = StatisticCard;
 const Piechart: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [responsive, setResponsive] = useState(false);
+  const router = useRouter();
+  const { id } = router.query;
 
   const {
     token: { colorBgContainer },
@@ -37,6 +40,7 @@ const Piechart: React.FC = () => {
   if (error) {
     return <div>Error: Failed to fetch data from the API.</div>;
   }
+  console.log('b',batchData?.result);
 
   return (
     <Layout style={{ minHeight: "100vh"}}>
@@ -78,6 +82,7 @@ const Piechart: React.FC = () => {
                       {batchData?.result.map((batch) => (
                         <ProCard key={batch.id} split="vertical">
                           <StatisticCard
+                          onClick={()=>router.push(`/BatchInformation/${batch.name}`)} //call api to dhow ingreidents by food type.
                             statistic={{
                               title: batch.name,
                               value: batch.quantity,
@@ -98,7 +103,7 @@ const Piechart: React.FC = () => {
                       chart={
                         <img
                           src="https://gw.alipayobjects.com/zos/alicdn/_dZIob2NB/zhuzhuangtu.svg"
-                          width="100%"
+                          width="20%"
                         />
                       }
                     />

@@ -83,7 +83,7 @@ useEffect(() =>
       <Content className={styles.ContentContainer}>
        
         <div className={styles.divLeft}>
-        <h1>Depleting Batches</h1>
+        <h1 style = {{color:'red'}}>Depleting Batches(under:300)</h1>
         <button onClick={handleOpenPopup}>Open Popup</button>
       <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} />
            <BatchTable />

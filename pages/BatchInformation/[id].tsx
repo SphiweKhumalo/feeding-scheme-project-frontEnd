@@ -23,7 +23,7 @@ interface BatchInformation {
 const DepletingBatch: React.FC<BatchCardProps> = () => {
   const [dataSource, setDataSource] = useState<BatchItem[]>([]);
   const { data: apiData, loading, error } = useGet({
-    path: 'BatchInformationService/DepletingStock'
+    path: 'BatchInformationService/GetBatchInformationByIngredient'
   });
 
   useEffect(() => {
@@ -46,13 +46,26 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
     //   key: 'ingredientId'
     // },
     {
-      title: 'BatchId',
+      title: 'batch Id',
       dataIndex: 'batchInformation',
       key: 'prodDate',
       render: (batchInformation) => {
         if (batchInformation.length > 0) {
           return batchInformation.map((batch) => (
             <p key={batch.id}>{batch.id}</p>
+          ));
+        }
+        return null;
+      }
+    },
+    {
+      title: 'Production Date',
+      dataIndex: 'batchInformation',
+      key: 'prodDate',
+      render: (batchInformation) => {
+        if (batchInformation.length > 0) {
+          return batchInformation.map((batch) => (
+            <p key={batch.id}>{batch.prodDate}</p>   //trim the date.
           ));
         }
         return null;
@@ -72,7 +85,7 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
       }
     },
     {
-      title: 'Quantity',
+      title: 'Quantities',
       dataIndex: 'batchInformation',
       key: 'quantity',
       render: (batchInformation) => {
@@ -100,18 +113,48 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
   ];
 
   return (
-    <div className="batchCard-container">
-      <Table
-        className="batchCard-table"
-        dataSource={dataSource}
-        columns={columns}
-        loading={loading}
-        pagination={false}
-        size="small"
-        rowClassName={styles.rowClass}
-        style={{ width: '2000px', height: '10' }} // Adjust the values as per your requirement
-      />
-    </div>
+    // <div className="batchCard-container">
+    //   <Table
+    //     className="batchCard-table"
+    //     dataSource={dataSource}
+    //     columns={columns}
+    //     loading={loading}
+    //     pagination={false}
+    //     size='large'
+    //     rowClassName={styles.rowClass}
+    //     style={{ width: '2000px', height: '10' }} // Adjust the values as per your requirement
+    //   />
+    // </div>
+    <>
+        <div className={styles.MenuContainer}>
+  {/* Content */}
+</div>
+
+<div className={styles.ContentContainer}>
+  <div className={styles.divLeft}>
+    {/* Left Content */}
+  </div>
+  <div className={styles.divRight}>
+    {/* Right Content */}
+  </div>
+</div>
+
+<h1 className={styles.h1}>Stock(batch)</h1>
+
+<div className={styles.batchCardContainer}>
+  <Table
+    className={styles.batchCardtable}
+    dataSource={dataSource}
+    columns={columns}
+    loading={loading}
+    pagination={false}
+    size="large"
+    rowClassName={styles.rowClass}
+    scroll={{ x: 800, y: 400 }}
+  />
+</div>
+
+    </>
   );
 };
 

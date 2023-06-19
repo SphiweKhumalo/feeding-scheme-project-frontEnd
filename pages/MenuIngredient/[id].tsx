@@ -49,6 +49,7 @@ const MenuIngredient: React.FC = () => {
         <div className="demo-logo" />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
           <Item key="1">nav 1</Item>
+          <Item key="2"><Button type = 'primary'onClick={()=>router.push(`/StudentsAllergic/${id}`)}>View Allergic Students</Button></Item>
         </Menu>
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>Home</Breadcrumb.Item>

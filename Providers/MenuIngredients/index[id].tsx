@@ -47,8 +47,8 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
         message.error("Failed to get Menu ingredient");
       }
     } catch (error) {
-      console.error("Menu ingredient retrieval error:", error);
-      message.error("An error occurred while retrieving menu ingredient");
+      // console.error("Menu ingredient retrieval error:", error);
+      // message.error("An error occurred while retrieving menu ingredient");
     }
   };
 

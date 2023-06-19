@@ -1,13 +1,14 @@
 import { Select, Button, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useGet, useMutate } from 'restful-react';
-import { useMenuIngredient } from '../../MenuIngredients-copy-original';
+import { useMenuIngredient } from '../../Providers/MenuIngredients/index[id]';
+
 
 const { Option } = Select;
 
 const MenuDropdown = ({ recvievedMenuId }) => {
   const [menuItems, setMenuItems] = useState([]);
-  const{MenuIngredientState}=useMenuIngredient();
+  const{menuIngredientAction,MenuIngredientState,createMenuIngredient}=useMenuIngredient();
   const [selectedValue, setSelectedValue] = useState(null); // Add selectedValue state
   const { mutate: createMenuIngredientHttp } = useMutate({
     path: 'MenuIngredientService/CreateMenuIngredient',
@@ -15,14 +16,15 @@ const MenuDropdown = ({ recvievedMenuId }) => {
   });
 
   const addMenuIngredient = async (payload) => {
-    var ingredientMenu = {
+    var ingredientMenu :IMenuIngredient= {
       ingredientId: payload,
       menuId: recvievedMenuId,
       quantityPerServing: 3,
     };
     try {
       console.log("Creating Menu Ingredient:", ingredientMenu);
-      const response = await createMenuIngredientHttp(ingredientMenu);
+      // const response = await createMenuIngredientHttp(ingredientMenu);
+      createMenuIngredient(ingredientMenu);
       console.log("Response:", response);
       if (response.success) {
         message.success('Ingredient added successfully');

@@ -89,9 +89,10 @@ const AddBatchPopup: React.FC<PopupProps> = ({ visible, onClose, onSubmit }) => 
         <Form.Item
           name="ingredientId"
           label="Ingredient ID"
-          rules={[{ required: true, message: 'Please enter the ingredient ID' }]}
+          // rules={[{ required: true, message: 'Please enter the ingredient ID' }]}
         >
-          <MenuDropdown menuItems={menuItems} />
+          <Input />
+          {/* <MenuDropdown menuItems={menuItems} /> */}
         </Form.Item>
         <Form.Item
           name="prodDate"

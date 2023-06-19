@@ -34,7 +34,9 @@
 {
     font-size: 3rem;
 }
-.modalStyling :hover
+
+.ModalStyling :hover
 {
-    color:aqua;
+    color: blue;
 }
+
