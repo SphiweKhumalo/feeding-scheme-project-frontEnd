@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Card, Menu, Modal } from 'antd';
+import { Layout, Card, Menu, Modal, List } from 'antd';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import styles from './styles.module.css';
 import { useGet } from 'restful-react';
 import { usePersons } from '../../Providers/personRegistration';
+import { Result, Typography } from 'antd';
+import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 
+const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
 
@@ -24,16 +27,32 @@ const DayMenuInformation: React.FC = () => {
   const { data: allergicStudentsData, refetch: getAllergicStudent } = useGet<any[]>({
     path: `MenuService/GetStudentsAllergicByMenu?id=${menuData?.result.id}`,
   });
+  const { data: eatingResults, refetch: geteatingResults } = useGet<any[]>({
+    path: 'MenuService/GetStudentEatingAndNotEatingByMenu?id=d592360f-f7e5-45c3-df00-08db6b3741f1',
+  });    //remove
+  // const { data: percentage, refetch: getPercentage } = useGet<any[]>({
+  //   path: `MenuService/GetPercentageOfStudentsAllergicByMenu?id=${percentage.result}`,
+  // });
 
+  // const { data: quantityPerServing, refetch: getQuantityPerServing } = useGet<any[]>({
+  //   path: `MenuService/GetQuantityPerServingByMenu?menuId=${menuData?.result.id}`,
+  // }); 
+  const { data: quantityPerServing, refetch: getQuantityPerServing } = useGet<any[]>({
+    path: 'MenuService/GetQuantityPerServingByMenu?menuId=d592360f-f7e5-45c3-df00-08db6b3741f1',
+  }); 
   useEffect(() => {
     getallergicStudentsData();
     getDayMenu();
+    geteatingResults();
+    getQuantityPerServing()
+
   }, []);
-console.log('fetch',FetchStatePerson)
+  // console.log('quanperperson',quantityPerServing?.result)
+console.log('fetch',eatingResults?.result)
   useEffect(() => {
     if (allergicStudentsData) {
       setAllergicStudents(allergicStudentsData);
-      console.log('count', allergicStudentsData.result.length);
+      // console.log('count', allergicStudentsData?.result?.length);
     }
   }, [allergicStudentsData]);
 
@@ -45,7 +64,7 @@ console.log('fetch',FetchStatePerson)
   const getallergicStudentsData = async () => {
     try {
       await getAllergicStudent();
-      console.log('count',allergicStudentsData?.length); 
+      // console.log('count',allergicStudentsData?.length); 
     } catch (error) {
       console.error('Error fetching menu data:', error);
     }
@@ -89,10 +108,42 @@ console.log('fetch',FetchStatePerson)
             <u>{menuData?.result.name}</u>
           </h1>
           <img src={menuData?.result.imageUrl} />
-          <p>show the amount of plates to prepare and the ingredients quantities</p>
+          <h1>Quantitites based on students number</h1>
+
+          <List
+            itemLayout="horizontal"
+            dataSource={quantityPerServing?.result}
+           renderItem={(item) => (
+          <List.Item>
+            <List.Item.Meta
+              title={item.ingredientName}
+              description={`Quantity: ${item.sumQuantityPerServing}`}
+            />
+          </List.Item>
+
+      )}
+    />
           <h2>Student Allergies</h2>
-          {/* //you need to call api where you get number of student */}
-          <p>No Of Students Allergic: {(allergicStudentsData?.result.length) / (allergicStudents?.length) * 100}%</p> 
+        
+          <div style ={{height:'10',display:'flex',padding:'100'}}>
+            
+           <span>
+             <Title level={1}>Students Allergic:</Title>
+               <Result
+                icon={<FrownOutlined />}
+                title={`Student Allergic: ${eatingResults?.result?.notEating}`}
+               />  
+           </span>
+           <span>
+              <Title level={1}>Plate to Prepare Allergic:</Title>
+                 <Result
+                  icon={<SmileOutlined />}
+                  title={`Plate to Prepare: ${eatingResults?.result?.eating}`}
+              />
+           </span>
+
+         
+          </div>
           <Card title="Student Allergies">
             {allergicStudents.result?.map((student) => (
               <Card key={student.studentId} onClick={() => handleStudentClick(student)}>

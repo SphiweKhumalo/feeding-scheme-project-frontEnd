@@ -3,7 +3,7 @@ import { createContext } from 'react';
 export interface IMenuIngredient{
   menuId:string;
   ingredientId:string;
-  quantityPerServing:number;
+  quantityPerServing?:number;
   }
 
 export interface IMenuIngredientStateContext {
@@ -14,9 +14,9 @@ export interface IMenuIngredientStateContext {
 export const INITIAL_STATE : IMenuIngredientStateContext = {MenuIngredientState:[]};
 
 export interface IMenuIngredientActionContext {
-    menuIngredientAction?: (payload:string) => void;
+    getMenuIngredient?: (id:string) => void;
     createMenuIngredient? : (payload:IMenuIngredient) =>void;
-    deleteMenuIngredient? : (payload:string) =>void;
+    deleteMenuIngredient? : (menuId:string,ingredientId:string) =>void;
 }
 
 const MenuIngredientContext = createContext<IMenuIngredientStateContext>(INITIAL_STATE);

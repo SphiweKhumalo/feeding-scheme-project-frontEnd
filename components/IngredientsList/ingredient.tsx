@@ -1,13 +1,15 @@
-import { Select, Button, message } from 'antd';
+import { Select, Button, message, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useGet, useMutate } from 'restful-react';
-import { useMenuIngredient } from '../../Providers/MenuIngredients/index[id]';
+import { useMenuIngredient } from '../../Providers/MenuIngredients';
+import { IMenuIngredient } from '../../Providers/MenuIngredients/context';
 
 
 const { Option } = Select;
 
 const MenuDropdown = ({ recvievedMenuId }) => {
   const [menuItems, setMenuItems] = useState([]);
+  const [quantityPerServing, setQuantityPerServing] = useState<number>(3); 
   const{menuIngredientAction,MenuIngredientState,createMenuIngredient}=useMenuIngredient();
   const [selectedValue, setSelectedValue] = useState(null); // Add selectedValue state
   const { mutate: createMenuIngredientHttp } = useMutate({
@@ -19,7 +21,7 @@ const MenuDropdown = ({ recvievedMenuId }) => {
     var ingredientMenu :IMenuIngredient= {
       ingredientId: payload,
       menuId: recvievedMenuId,
-      quantityPerServing: 3,
+      quantityPerServing: quantityPerServing,
     };
     try {
       console.log("Creating Menu Ingredient:", ingredientMenu);
@@ -59,6 +61,9 @@ const MenuDropdown = ({ recvievedMenuId }) => {
   const handleSelectChange = (value) => {
     setSelectedValue(value); // Update selectedValue state
   };
+  const handleQuantityChange = (e) => {
+    setQuantityPerServing(e.target.value); // Update quantityPerServing state
+  };
 
   return (
     <div>
@@ -69,6 +74,8 @@ const MenuDropdown = ({ recvievedMenuId }) => {
           </Option>
         ))}
       </Select>
+      <Input type="number" placeholder="Quantity Per Serving" onChange={handleQuantityChange} value={quantityPerServing} />
+
       <Button type="primary" onClick={handleSubmit}>
         Add Ingredient
       </Button>

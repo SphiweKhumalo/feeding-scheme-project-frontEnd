@@ -8,7 +8,7 @@ import { useMenu } from '../../Providers/Menu';
 import MenuDropdown from '../../components/IngredientsList/ingredient';
 import {DeleteOutlined} from '@ant-design/icons';
 import { IMenuIngredient, MenuIngredientActionContext } from '../../Providers/MenuIngredients/context';
-import { useMenuIngredient } from '../../Providers/MenuIngredients/index[id]';
+import { useMenuIngredient } from '../../Providers/MenuIngredients';
 import BatchTable from '../../components/StockManagement/depletingStock/DepletingBatch';
 import MyChartComponent from '../../components/StockManagement/batchTable';
 import BarChart from '../../components/StockManagement/batchTable';

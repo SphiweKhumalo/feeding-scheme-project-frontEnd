@@ -8,8 +8,8 @@ export function MenuReducer(incomingState: IMenuIngredientStateContext,action: R
     
     switch(type)
     {
-        case MenuIngredientActionEnum.fetchMenuRequest: 
-        return {...incomingState,...payload}
+        case MenuIngredientActionEnum.fetchMenuRequest:
+            return {...incomingState,...payload}
             case MenuIngredientActionEnum.createMenuRequest: 
             return {...incomingState,MenuIngredientState:[payload.MenuIngredientCreated,...incomingState?.MenuIngredientState]}
             case MenuIngredientActionEnum.deleteMenuIngredient:

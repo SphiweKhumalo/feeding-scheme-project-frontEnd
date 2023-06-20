@@ -3,7 +3,7 @@ import {RestfulProvider} from 'restful-react';
 import { AppProps } from 'next/app';
 import MenuProvider from "../Providers/Menu";
 import MenuIngredient from "./MenuIngredient/[id]";
-import MenuIngredientProvider from "../Providers/MenuIngredients/index[id]";
+import MenuIngredientProvider from "../Providers/MenuIngredients";
 import BatchInformation from "../components/StockManagement/batchTable";
 import BatchInformationProvider from "../Providers/BatchInformation";
 import { PersonProvider } from "../Providers/personRegistration";

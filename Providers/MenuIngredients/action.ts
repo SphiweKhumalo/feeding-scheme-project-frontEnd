@@ -10,4 +10,4 @@ export enum MenuIngredientActionEnum
 
 export const fetchMenuIngredientRequestAction = createAction<IMenuIngredientStateContext,Array<IMenuIngredient>>(MenuIngredientActionEnum.fetchMenuRequest,(MenuIngredientState)=>({MenuIngredientState}));
 export const createMenuIngredientRequestAction = createAction<IMenuIngredientStateContext,IMenuIngredient>(MenuIngredientActionEnum.createMenuRequest,(MenuIngredientCreated)=>({MenuIngredientCreated}));
-export const deleteMenuIngredientRequestAction = createAction<IMenuIngredientStateContext,string>(MenuIngredientActionEnum.deleteMenuIngredient,(MenuIngredientDeleted)=>({MenuIngredientDeleted}));
+export const deleteMenuIngredientRequestAction = createAction<IMenuIngredientStateContext,IMenuIngredient>(MenuIngredientActionEnum.deleteMenuIngredient,(MenuIngredientDeleted)=>({MenuIngredientDeleted}));

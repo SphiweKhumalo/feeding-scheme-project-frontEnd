@@ -7,6 +7,7 @@ import { useGet } from 'restful-react';
 import { usePersons } from '../../Providers/personRegistration';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
 import Sider from 'antd/es/layout/Sider';
+import StudentDetails from '../StudentDetails/index[id]';
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
@@ -52,7 +53,15 @@ const Students: React.FC = () => {
     { title: 'Surname', dataIndex: 'surname', key: 'surname' },
     { title: 'Username', dataIndex: 'userName', key: 'username' },
     { title: 'Grade', dataIndex: 'grade', key: 'Grade' },
-
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (text: any, record: any) => (
+        <Button type="primary" onClick={() => handleStudentClick(record)}>
+          View Details
+        </Button>
+      ),
+    },
   ];
   const getallergicStudentsData = async () => {
     try {
@@ -80,6 +89,7 @@ const Students: React.FC = () => {
   const handleStudentClick = (student: any) => {
     setSelectedStudent(student);
     setModalVisible(true);
+    router.push(`/StudentDetails/${student.id}`);
   };
 
   const handleCloseModal = () => {
@@ -109,6 +119,7 @@ const Students: React.FC = () => {
           <Item key="1">Day Section</Item>
         </Menu>
       </Header>
+      
       <Content className={styles.ContentContainer}>
         <div className={styles.divLeft}>      
             <Button type="primary" onClick={handleAddStudentClick}>
@@ -118,7 +129,7 @@ const Students: React.FC = () => {
         <div className={styles.divRight}>
           {/* Add your right content here */}
         </div>
-        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={["dashboard"]} mode="inline">
           {items.map((item) => (
@@ -131,7 +142,7 @@ const Students: React.FC = () => {
             </Menu.Item>
           ))}
         </Menu>
-      </Sider>
+      </Sider> */}
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
 
@@ -189,13 +200,6 @@ const Students: React.FC = () => {
           <Form.Item label="Grade" name="grade" rules={[{ required: true, message: 'Please enter the grade' }]}>
             <Input />
           </Form.Item>
-          {/* <Form.Item
-            label="Student Number"
-            name="studNo"
-            rules={[{ required: true, message: 'Please enter the student number' }]}
-          >
-            <Input />
-          </Form.Item> */}
           <Form.Item
             label="Password"
             name="password"
@@ -268,7 +272,8 @@ const Students: React.FC = () => {
           </Form.Item>
         </Form>
 </Modal>
-<Table columns={columns} dataSource={students?.result} loading={loading} rowKey="id" />
+      <Table columns={columns} dataSource={students?.result} loading={loading} rowKey="id" />
+    
     </Layout>
   );
 };

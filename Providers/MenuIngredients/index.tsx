@@ -4,53 +4,49 @@ import { MenuReducer } from './reducer';
 import { fetchMenuIngredientRequestAction, createMenuIngredientRequestAction, deleteMenuIngredientRequestAction } from './action';
 import { useGet, useMutate } from 'restful-react';
 import { message } from 'antd';
-import { useRouter } from 'next/router';
 import axios from 'axios';
-import { withSuccess } from 'antd/es/modal/confirm';
 
 const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
-  const router = useRouter();
-  const { id } = router.query;
   const [state, dispatch] = useReducer(MenuReducer, INITIAL_STATE);
   const { mutate: createMenuHttp } = useMutate({
-    path: 'MenuIngredientService/Create',
+    path: 'MenuIngredientService/CreateMenuIngredient',
     verb: 'POST',
   });
 
   const { data: menuIngredientData, refetch: getMenuIngredientsHttp } = useGet({
-    path: `MenuService/GetMenuWithIngredientsById?menuId=${id}`,
+    path: `MenuService/GetMenuWithIngredientsById`,
   });
 
   const { mutate: deleteMenuIngredientHttp } = useMutate({
-    // path: 'MenuIngredientService/Delete', 
-    path: `DeleteMenuIngredient?menuId=${id}&ingredientId=`,
+    // path: 'MenuIngredientService/Delete',
+    path: `DeleteMenuIngredient?menuId=&ingredientId=`,
     verb: 'DELETE',
   });
-  
 
-  useEffect(() => {
-    getMenuIngredientsHttp();
-    console.log(menuIngredientData);
-  }, []);
 
-  const handleEvent = () => {
-    getMenuIngredientsHttp(); // Call the API when the event occurs
-  };
 
-  const menuIngredientAction = async () => {
+
+
+  const getMenuIngredient = async (id: string) => {
     try {
-      const response = await getMenuIngredientsHttp();
+      const response = await getMenuIngredientsHttp({
+        queryParams: { menuId: id },
+      });
+
+      console.log('data', response);
+
       if (response.success) {
         dispatch(fetchMenuIngredientRequestAction(response.result));
-        console.log('res',response.data.result);
+        console.log('result menu Ingredient', response.result);
       } else {
-        message.error("Failed to get Menu ingredient");
+        message.error('Failed to get Menu ingredient');
       }
     } catch (error) {
-      // console.error("Menu ingredient retrieval error:", error);
-      // message.error("An error occurred while retrieving menu ingredient");
+      console.error('Menu ingredient retrieval error:', error);
+      message.error('An error occurred while retrieving menu ingredient');
     }
   };
+
 
   const createMenuIngredient = async (payload) => {
     try {
@@ -58,7 +54,7 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       if (response.success) {
         dispatch(createMenuIngredientRequestAction(response));
         message.success("Ingredient added to Menu successfully");
-      
+
       } else {
         message.error("Failed to add Menu ingredient");
       }
@@ -68,31 +64,56 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   };
 
-  const deleteMenuIngredient = async (payload) => {
-    axios.delete(`https://localhost:44311/api/services/app/MenuIngredientService/DeleteMenuIngredient?menuId=${id}&ingredientId=${payload}`)
-    .then(res => 
-      {
-        try
-        {
-          console.log('data res',res.data);
-          if(res.data.success)
-          {
-            dispatch(deleteMenuIngredientRequestAction(payload));
-            message.success('deleted successfully',res.data)
+  const deleteMenuIngredient = async (menuId,ingredientId) =>
+  {
+    console.log('menuId',menuId);
+    try
+    {
+        const response = await deleteMenuIngredientHttp({
+          queryParams:{
+            menuId:menuId,
+            ingredientId:ingredientId
           }
-        }catch(error)
-        {
-          console.log('error message',error);
-          message.error('error message',error)
+        });
+        console.log('params',menuId)
+        if (response.success) {
+          // dispatch(deleteMenuIngredientRequestAction(response));
+          message.success("Ingredient deleted to Menu successfully");
+
+        } else {
+          message.error("Failed to delete Menu ingredient");
         }
-      
-      }).catch(err => console.log('catched  error',err))
-  };
+    }catch(error)
+    {
+      console.error("Menu Ingredient deletion error:", error);
+    }
+  }
+
+  // const deleteMenuIngredient = async (payload) => {
+  //   axios.delete(`https://localhost:44311/api/services/app/MenuIngredientService/DeleteMenuIngredient?menuId=${id}&ingredientId=${payload}`)
+  //   .then(res =>
+  //     {
+  //       try
+  //       {
+  //         console.log('data res',res.data);
+  //         if(res.data.success)
+  //         {
+  //           dispatch(deleteMenuIngredientRequestAction(payload));
+  //           message.success('deleted successfully',res.data)
+  //         }
+  //       }catch(error)
+  //       {
+  //         console.log('error message',error);
+  //         message.error('error message',error)
+  //       }
+
+  //     }).catch(err => console.log('catched  error',err))
+  // };
 
   return (
     <MenuIngredientContext.Provider value={state}>
       <MenuIngredientActionContext.Provider
-        value={{ createMenuIngredient, menuIngredientAction, deleteMenuIngredient }}
+        value={{ createMenuIngredient, getMenuIngredient ,deleteMenuIngredient}}
       >
         {children}
       </MenuIngredientActionContext.Provider>

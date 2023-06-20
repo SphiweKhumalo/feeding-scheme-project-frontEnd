@@ -8,7 +8,7 @@ import { useMenu } from '../../Providers/Menu';
 import MenuDropdown from '../../components/IngredientsList/ingredient';
 import { DeleteOutlined } from '@ant-design/icons';
 import { IMenuIngredient, MenuIngredientActionContext } from '../../Providers/MenuIngredients/context';
-import { useMenuIngredient } from '../../Providers/MenuIngredients/index[id]';
+import { useMenuIngredient } from '../../Providers/MenuIngredients';
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
@@ -21,26 +21,40 @@ interface Ingredient {
 
 const MenuIngredient: React.FC = () => {
   const { menusAction, MenuState } = useMenu();
-  const [filteredMenuIngredients, setFilteredMenuIngredients] = useState<Ingredient[]>([]);
-  const { menuIngredientAction, MenuIngredientState, createMenuIngredient } = useMenuIngredient();
+  const [filteredMenuIngredients, setFilteredMenuIngredients] = useState<IMenuIngredient[]>([]);
+  const { getMenuIngredient, MenuIngredientState, createMenuIngredient,deleteMenuIngredient,MenuIngredientDeleted } = useMenuIngredient();
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    menuIngredientAction('d592360f-f7e5-45c3-df00-08db6b3741f1');
+    getMenuIngredient(id.toString())
+    console.log(filteredMenuIngredients);
+    setFilteredMenuIngredients(MenuIngredientState);
   }, []);
 
   useEffect(() => {
-    setFilteredMenuIngredients(MenuIngredientState);
+   
     console.log('menu state', MenuState);
-    console.log('filtered menu Ingredient state', filteredMenuIngredients);
+    console.log('filtered menu Ingredient state', MenuIngredientState);
   }, [MenuIngredientState]);
-
+  useEffect(() => {
+    if (MenuIngredientState) {
+      setFilteredMenuIngredients(MenuIngredientState);
+    }
+  }, [MenuIngredientState]);
+  
+  console.log('filtered menu Ingredient state', MenuIngredientState);
   var filteredMenu = MenuState.find((a) => a.id == id);
 
-  const handleDeleteClick = (id) => {
-    console.log('id is', id);
-    message.success('dummy Delete Clicked with id: ' + id);
+  const handleDeleteClick = (payload) => {
+    var mi :IMenuIngredient = 
+    {
+      ingredientId:  payload.id, 
+      menuId:id.toString()
+    }
+    console.log('mi On delete', mi);
+    deleteMenuIngredient(id.toString(),payload.id)
+     // message.success('dummy Delete Clicked with id: ' + id);
   };
 
   return (
@@ -72,7 +86,7 @@ const MenuIngredient: React.FC = () => {
               cover={<img alt="example" src={null} />}
             >
               <Meta title={a?.name} description={a?.Group} />
-              <span onClick={() => handleDeleteClick(a.id)}>
+              <span onClick={() => handleDeleteClick(a)}>
                 <DeleteOutlined />
               </span>
             </Card>

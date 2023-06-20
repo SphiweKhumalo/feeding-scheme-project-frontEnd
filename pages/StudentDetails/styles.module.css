@@ -1,0 +1,42 @@
+.MenuContainer
+{
+    width: 200px;
+    margin: 3rem;
+    border: 2px solid green;
+}
+
+.ContentContainer{
+     padding: '50px 50px' ;
+     /* display: flex;
+     flex-direction: row; */
+}
+.divLeft {
+    border: 2px solid red;
+    width: 100%;
+    padding:6rem;
+
+  }
+  
+.divRight {
+    padding: 2rem;
+    border: 2px solid rgb(0, 38, 255);
+    width: 100%;
+    background-color: rgb(3, 18, 31);
+    color: white;
+}
+  
+.imageContainer
+{
+    width:400px;
+}
+
+.h1
+{
+    font-size: 3rem;
+}
+
+.ModalStyling :hover
+{
+    color: blue;
+}
+
