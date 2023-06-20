@@ -64,30 +64,79 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   };
 
-  const deleteMenuIngredient = async (menuId,ingredientId) =>
-  {
-    console.log('menuId',menuId,ingredientId);
-    try
-    {
-        const response = await deleteMenuIngredientHttp({
-          queryParams:{
-            menuId:menuId,
-            ingredientId:ingredientId
-          }
-        });
-        console.log('params menuId',menuId,'ingredient',ingredientId)
-        if (response.success) {
-          // dispatch(deleteMenuIngredientRequestAction(response));
-          message.success("Ingredient deleted to Menu successfully");
+  // const deleteMenuIngredient = async (menuId:string,ingredientId:string) =>
+  // {
+  //   console.log('menuId',menuId,ingredientId);
+  //   try
+  //   {
+  //       const response = await deleteMenuIngredientHttp({
+  //         queryParams:{
+  //           menuId:menuId,
+  //           ingredientId:ingredientId
+  //         }
+  //       });
+  //       console.log('params menuId',menuId,'ingredient',ingredientId)
+  //       if (response.success) {
+  //         dispatch(deleteMenuIngredientRequestAction(response.result));
+  //         message.success("Ingredient deleted to Menu successfully");
 
-        } else {
-          message.error("Failed to delete Menu ingredient");
+  //       } else {
+  //         message.error("Failed to delete Menu ingredient");
+  //       }
+  //   }catch(error)
+  //   {
+  //     console.error("Menu Ingredient deletion error:", error);
+  //   }
+  // }
+  const deleteMenuIngredient = async (menuId, ingredientId) => {
+    try {
+      const response = await deleteMenuIngredientHttp({
+        queryParams: {
+          menuId: menuId,
+          ingredientId: ingredientId
         }
-    }catch(error)
-    {
+      });
+
+      console.log('params menuId', menuId, 'ingredient', ingredientId);
+
+      if (response.success) {
+        dispatch(deleteMenuIngredientRequestAction(response.result));
+        message.success("Ingredient deleted from Menu successfully");
+      } else {
+        message.error("Failed to delete Menu ingredient");
+      }
+    } catch (error) {
       console.error("Menu Ingredient deletion error:", error);
     }
-  }
+  };
+
+//   const deleteMenuIngredient = async (menuId:string,ingredientId:string) =>{
+//   await fetch(`https://localhost:44311/DeleteMenuIngredient?menuId=${menuId}&ingredientId=${ingredientId}`, {
+//         method: 'DELETE',
+//         cache:'no-cache',
+//         headers:{
+//             "Content-Type": "application/json"
+//         },
+//     }).then( returnedResult =>{
+//         returnedResult.json()
+//       .then( finalData => {
+//             console.log('-----print',finalData)
+//             if(finalData.success){
+//                 dispatch(deleteMenuIngredientRequestAction(finalData));
+//             }else if(finalData.error){
+//               console.error("Menu Ingredient deletion error:", finalData.error);
+//             }
+//         })
+//     })
+// }
+
+
+
+
+
+
+
+
 
   // const deleteMenuIngredient = async (payload) => {
   //   axios.delete(`https://localhost:44311/api/services/app/MenuIngredientService/DeleteMenuIngredient?menuId=${id}&ingredientId=${payload}`)
