@@ -160,14 +160,14 @@ const App: React.FC = () => {
           ))}
         </Menu>
       </Sider>
-      <Layout>
+      <Layout className={styles.centerLayout}>
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item >User</Breadcrumb.Item>
             {/* <Breadcrumb.Item>Bill</Breadcrumb.Item> */}
           </Breadcrumb>
-          <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
+          <div className={styles.cardDiv}>
             <>
               <Divider orientation="left">Menu List</Divider>
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>

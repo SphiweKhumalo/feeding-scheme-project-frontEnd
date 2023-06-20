@@ -54,7 +54,6 @@ const MenuIngredient: React.FC = () => {
     }
     console.log('mi On delete', mi);
     deleteMenuIngredient(id.toString(),payload.id)
-     // message.success('dummy Delete Clicked with id: ' + id);
   };
 
   return (

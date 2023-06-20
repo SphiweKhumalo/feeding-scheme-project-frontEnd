@@ -19,7 +19,7 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const { mutate: deleteMenuIngredientHttp } = useMutate({
     // path: 'MenuIngredientService/Delete',
-    path: `DeleteMenuIngredient?menuId=&ingredientId=`,
+    path: `MenuIngredientService/DeleteMenuIngredient`,
     verb: 'DELETE',
   });
 
@@ -66,7 +66,7 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const deleteMenuIngredient = async (menuId,ingredientId) =>
   {
-    console.log('menuId',menuId);
+    console.log('menuId',menuId,ingredientId);
     try
     {
         const response = await deleteMenuIngredientHttp({
@@ -75,7 +75,7 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
             ingredientId:ingredientId
           }
         });
-        console.log('params',menuId)
+        console.log('params menuId',menuId,'ingredient',ingredientId)
         if (response.success) {
           // dispatch(deleteMenuIngredientRequestAction(response));
           message.success("Ingredient deleted to Menu successfully");

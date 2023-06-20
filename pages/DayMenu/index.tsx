@@ -69,7 +69,7 @@ console.log('fetch',eatingResults?.result)
       console.error('Error fetching menu data:', error);
     }
   };
-
+console.log('allergic',allergicStudents)
   const fetchSpecialFood = () => {
     axios
       .get('https://api.example.com/specialfood')
@@ -128,7 +128,7 @@ console.log('fetch',eatingResults?.result)
           <div style ={{height:'10',display:'flex',padding:'100'}}>
             
            <span>
-             <Title level={1}>Students Allergic:</Title>
+             <Title level={1}>Students Allergic</Title>
                <Result
                 icon={<FrownOutlined />}
                 title={`Student Allergic: ${eatingResults?.result?.notEating}`}
