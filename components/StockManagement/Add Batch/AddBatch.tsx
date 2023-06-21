@@ -1,8 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import { Button, DatePicker, Form, Input, Modal, Select, message } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import React, { useEffect, useState } from 'react';
-import { useMutate } from 'restful-react';
+import { useGet, useMutate } from 'restful-react';
 import MenuDropdown from '../../IngredientsList/ingredient';
+import SupplierDropdown from '../../Suppliers/SupplierDropdown';
+import IngredientDropdown from '../../IngredientDropdown/IngredientDropdown';
+
 
 interface PopupProps {
   visible: boolean;
@@ -23,9 +26,12 @@ const AddBatchPopup: React.FC<PopupProps> = ({ visible, onClose, onSubmit }) => 
     path: 'BatchInformationService/CreateBatchInformation',
     verb: 'POST',
   });
-
+  const { data: supplierData, refetch: getSupplierssHttp } = useGet({
+    path: `Supplier/GetAll`,
+  });
   const [form] = useForm<FormData>();
   const [menuItems, setMenuItems] = useState([]);
+  const [selectedSupplier, setSelectedSupplier] = useState('');
 
   const handleCancel = () => {
     form.resetFields();
@@ -34,10 +40,11 @@ const AddBatchPopup: React.FC<PopupProps> = ({ visible, onClose, onSubmit }) => 
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const { ingredientId, ...restValues } = values;
-      const selectedIngredient = menuItems.find((item) => item.id === ingredientId);
+      const { supplierId, ...restValues } = values;
+      const selectedIngredient = menuItems?.result?.items?.find((item) => item.id === values.ingredientId);
       const formData = {
-        ingredientId: selectedIngredient?.name || '',
+        ingredientId: selectedIngredient?.id || '',
+        supplierId: selectedSupplier,
         ...restValues,
       };
       createBatchInformationHttp(formData)
@@ -55,21 +62,15 @@ const AddBatchPopup: React.FC<PopupProps> = ({ visible, onClose, onSubmit }) => 
         });
     });
   };
+  
+  
 
   useEffect(() => {
-    // Fetch the list of ingredients from the API
-    const fetchMenuItems = async () => {
-      try {
-        const response = await fetch('API_URL'); // Replace 'API_URL' with your actual API endpoint to fetch the menu items
-        const data = await response.json();
-        setMenuItems(data.menuItems);
-      } catch (error) {
-        console.error('Error fetching menu items:', error);
-      }
-    };
-
-    fetchMenuItems();
-  }, []);
+    if (supplierData) {
+      const suppliers = supplierData.result;
+      setMenuItems(suppliers);
+    }
+  }, [supplierData]);
 
   return (
     <Modal
@@ -87,13 +88,20 @@ const AddBatchPopup: React.FC<PopupProps> = ({ visible, onClose, onSubmit }) => 
     >
       <Form form={form} layout="vertical">
         <Form.Item
+          name="supplierId"
+          label="Supplier"
+          // rules={[{ required: true, message: 'Please select a supplier' }]}
+        >
+          <SupplierDropdown onSelect={setSelectedSupplier} />
+        </Form.Item>
+        <Form.Item
           name="ingredientId"
           label="Ingredient ID"
           // rules={[{ required: true, message: 'Please enter the ingredient ID' }]}
         >
-          <Input />
-          <MenuDropdown recvievedMenuId={undefined} />
-          {/* <MenuDropdown menuItems={menuItems} /> */}
+                   <IngredientDropdown onSelect={(value) => form.setFieldsValue({ ingredientId: value })} />
+
+          {/* <Input /> */}
         </Form.Item>
         <Form.Item
           name="prodDate"
@@ -116,13 +124,13 @@ const AddBatchPopup: React.FC<PopupProps> = ({ visible, onClose, onSubmit }) => 
         >
           <Input type="number" />
         </Form.Item>
-        <Form.Item
-          name="supplierId"
-          label="Supplier ID"
-          rules={[{ required: true, message: 'Please enter the supplier ID' }]}
-        >
-          <Input />
-        </Form.Item>
+        {/* <Form.Item
+          name="ingredientId"
+          label="Ingredient ID" */}
+           {/* // rules={[{ required: true, message: 'Please enter the ingredient ID' }]}
+          > */}
+         {/* <IngredientDropdown onSelect={(value) => form.setFieldsValue({ ingredientId: value })} /> */}
+        {/* </Form.Item> */}
       </Form>
     </Modal>
   );

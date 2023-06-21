@@ -54,6 +54,7 @@ export interface IPersonStateContext
     readonly PersonCreated?: IPerson;
     readonly PersonLoggedIn?: IPersonLogin;
     readonly FetchStatePerson?: IPerson[];
+    readonly PersonFetched?:IPerson;
 }
 
 export const INITIAL_STATE: IPersonStateContext  = {}; //In this case, the initial state has an empty object as the default value for the IPersonStateContext
@@ -63,6 +64,7 @@ export interface IPersonActionContext     //this is where tje crud functions are
     createPerson? : (payload : IPerson) => void;   ///LIKE YOUR crud services.
      loginPerson? : (payload :IPersonLogin) => void;
      getStudents?:()=>void;
+     getStudentById?: (payload:string )=> void;
 
 }
 

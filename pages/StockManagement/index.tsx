@@ -16,6 +16,9 @@ import BatchInformation from '../../components/StockManagement/batchTable';
 import Piechart from '../../components/StockManagement/pieChart';
 import AddBatchPopup from '../../components/StockManagement/Add Batch/AddBatch';
 import { App, MyBar } from '../../components/StockManagement/BarGraph/App';
+import { DepletingStockPieChart } from '../../components/StockManagement/DepletingStockPieChart/depletingStockPieChart';
+import DepletingBatch from '../BatchInformation/[id]';
+import { DepletingStock } from '../../components/StockManagement/BarGraphDepletingStock/App';
 // import { useBatchInformation } from '../../Providers/BatchInformation';
 
 const { Header, Content, Footer } = Layout;
@@ -94,6 +97,8 @@ useEffect(() =>
           <h1>Fresh Stock Levels</h1>
             {/* <BatchInformation /> */}
             <Piechart />
+            <DepletingStock />
+            {/* <DepletingStockPieChart /> */}
         </div>
         <App />
       </Content>

@@ -1,10 +1,11 @@
 import React, { FC, PropsWithChildren, useContext, useReducer } from 'react';
 import { PersonReducer } from './reducer';
 import { INITIAL_STATE, IPerson, IPersonLogin, IPersonLogin2,PersonActionContext, PersonContext } from './AuthContext';
-import { createPersonRequestAction, getPersonsRequestAction, loginPersonRequestAction } from './actions';
+import { createPersonRequestAction, getPersonsRequestAction, loginPersonRequestAction,getPersonsByIdRequestAction } from './actions';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { json } from 'react-router-dom';
 import { useGet, useMutate } from 'restful-react';
+import axios from 'axios';
 
 
 
@@ -56,35 +57,44 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const createPerson = async (payload: IPerson) => {
-
     try {
       const response = await createPersonMutation.mutate(payload);
-  
-      if (response.ok) {
         const data = response.data;
         console.log(data);
-        localStorage.setItem('token', data.result.accessToken);
+        // localStorage.setItem('token', data.result.accessToken);
         dispatch(createPersonRequestAction(data));    //dispatch result from backend rather(c).
-        message.error('Successfully created');
-      } else {
-        message.error('Invalid username or password ',response.error);
-      }
+        message.success('Successfully created');
     } catch (error) {
       console.log(error);
-      message.error('create student failed');
+      message.error('Create student failed');
     }
   };
   
+  const getStudentById = async(id:string)=>
+  {
+    axios.get(`https://localhost:44311/api/services/app/Student/GetAsnyc?id=${id}`)
+    const getStudents = async () => {
+      var res = await getStudentsHttp();
+      if (res.ok) {
+        console.log('res', res.result);
+        dispatch(getPersonsByIdRequestAction(res.result));
+      }
+    };
+  }
   const { data: students  ,refetch:getStudentsHttp} = useGet<any[]>({
     path: 'Student/GetAll',
   });
-const getStudents = async ()  => 
-{
-  getStudentsHttp();
-  dispatch(getPersonsRequestAction(students))
- 
-}
-console.log('index Provider',students)
+  
+  
+  const getStudents = async () => {
+    var res = await getStudentsHttp();
+    if (res.success) {
+      console.log('res', res.result);
+      dispatch(getPersonsRequestAction(res.result));
+    }
+  };
+
+
   const getAllPerson = async (payload : IPersonLogin) =>
   {
     const url = 'https://localhost:44311/api/services/app/PersonService/getAll';
@@ -178,7 +188,7 @@ console.log('index Provider',students)
  
   return (
     <PersonContext.Provider value={state}>
-      <PersonActionContext.Provider value={{ createPerson,loginPerson,getStudents }}>
+      <PersonActionContext.Provider value={{ createPerson,loginPerson,getStudents, getStudentById}}>
         {children}
       </PersonActionContext.Provider>
     </PersonContext.Provider>

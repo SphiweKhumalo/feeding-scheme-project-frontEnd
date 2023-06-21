@@ -21,7 +21,7 @@ const Students: React.FC = () => {
   const [alternativeFood, setAlternativeFood] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
-  const{createPerson}=usePersons();
+  const{createPerson,FetchStatePerson,getStudents}=usePersons();
   const [addStudentVisible, setAddStudentVisible] = useState<boolean>(false);
 
   const { data: menuData, refetch: getDayMenu } = useGet<any[]>({
@@ -30,18 +30,18 @@ const Students: React.FC = () => {
   const { data: allergicStudentsData, refetch: getAllergicStudent } = useGet<any[]>({
     path: `MenuService/GetStudentsAllergicByMenu?id=${menuData?.result.id}`,
   });
-  const { data: students, loading } = useGet<any[]>({
-    path: 'Student/GetAll',
-  });
+
   useEffect(() => {
     getallergicStudentsData();
     getDayMenu();
+    getStudents()
   }, []);
 
   useEffect(() => {
     if (allergicStudentsData) {
       setAllergicStudents(allergicStudentsData);
       console.log('count', allergicStudentsData.result.length);
+      console.log('students from  fetch',FetchStatePerson);
     }
   }, [allergicStudentsData]);
 
@@ -90,7 +90,7 @@ const Students: React.FC = () => {
   const handleStudentClick = (student: any) => {
     setSelectedStudent(student);
     setModalVisible(true);
-    // router.push(`/StudentDetails/${student.id}`);
+    router.push(`/StudentDetails/${student.id}`);
   };
 
   const handleCloseModal = () => {
@@ -130,51 +130,7 @@ const Students: React.FC = () => {
         <div className={styles.divRight}>
           {/* Add your right content here */}
         </div>
-        {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={["dashboard"]} mode="inline">
-          {items.map((item) => (
-            <Menu.Item
-              key={item.key}
-              icon={item.icon}
-              onClick={() => handleDayMenuClick(item.path)}
-            >
-              <Link href={item.path}>{item.title}</Link>
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Sider> */}
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-
-      {/* Modal */}
-      {selectedStudent && (
-        <Modal
-          title={`${selectedStudent.name} ${selectedStudent.surname}`}
-          visible={modalVisible}
-          onCancel={handleCloseModal}
-          footer={null}
-        >
-          <p>
-            <b>Ingredient: </b>
-            {selectedStudent?.result.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
-          </p>
-          <p>
-            <b>Reaction: </b>
-            {selectedStudent.reactions.map((reaction, index) => (
-              <li key={index}>{reaction}</li>
-            ))}
-          </p>
-          <p>
-            <b>Treatment: </b>
-            {selectedStudent.treatements.map((treatment, index) => (
-              <li key={index}>{treatment}</li>
-            ))}
-          </p>
-        </Modal>
-      )}
 
       {/* Add Student Modal */}
       // Add Student Modal
@@ -273,7 +229,7 @@ const Students: React.FC = () => {
           </Form.Item>
         </Form>
 </Modal>
-      <Table columns={columns} dataSource={students?.result} loading={loading} rowKey="id" />
+      <Table columns={columns} dataSource={FetchStatePerson} loading={false} rowKey="id" />
       <App />
     </Layout>
   );

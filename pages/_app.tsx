@@ -8,6 +8,7 @@ import BatchInformation from "../components/StockManagement/batchTable";
 import BatchInformationProvider from "../Providers/BatchInformation";
 import { PersonProvider } from "../Providers/personRegistration";
 import MyLayout from "../components/Layout";
+import IngredientProvider from "../Providers/Ingredients";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>   
@@ -16,13 +17,14 @@ function MyApp({ Component, pageProps }: AppProps) {
        {/* <BatchInformationProvider> */}
        
        <PersonProvider>
-       <MenuProvider>
+        <IngredientProvider>
+        <MenuProvider>
         <MenuIngredientProvider>
              <Component {...pageProps} />
         </MenuIngredientProvider>
        </MenuProvider>
+       </IngredientProvider>
        </PersonProvider>
-     
        {/* </BatchInformationProvider> */}
        </RestfulProvider>
        </MyLayout>

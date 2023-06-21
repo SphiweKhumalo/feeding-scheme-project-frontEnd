@@ -13,4 +13,5 @@ export enum PersonActionEnum
 export const createPersonRequestAction = createAction<IPersonStateContext,IPerson>(PersonActionEnum.CreatePersonRequest,(PersonCreated) => ({PersonCreated}))
 export const loginPersonRequestAction = createAction<IPersonStateContext,IPersonLogin>(PersonActionEnum.loginPersonRequest,(PersonLoggedIn)   => ({PersonLoggedIn}))
 export const getPersonsRequestAction= createAction<IPersonStateContext,Array<IPerson>>(PersonActionEnum.loginPersonRequest,(FetchStatePerson)   => ({FetchStatePerson}))
+export const getPersonsByIdRequestAction= createAction<IPersonStateContext,IPerson>(PersonActionEnum.getPersonsRequest,(PersonFetched)   => ({PersonFetched}))
 

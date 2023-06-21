@@ -7,7 +7,7 @@ export function PersonReducer (incomingState :IPersonStateContext, action :  Red
     const { type, payload } = action;
         switch(type)
         {
-            case PersonActionEnum.CreatePersonRequest : return {...incomingState, ...payload};
+            case PersonActionEnum.CreatePersonRequest : return {...payload,...incomingState, };
             case PersonActionEnum.loginPersonRequest : return {...incomingState, ...payload};
             case PersonActionEnum.getPersonsRequest :return{...incomingState,...payload};
             default : return incomingState

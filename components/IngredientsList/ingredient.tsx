@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useGet, useMutate } from 'restful-react';
 import { useMenuIngredient } from '../../Providers/MenuIngredients';
 import { IMenuIngredient } from '../../Providers/MenuIngredients/context';
+import { useIngredient } from '../../Providers/Ingredients';
 
 
 const { Option } = Select;
 
 const MenuDropdown = ({ recvievedMenuId }) => {
-  const [menuItems, setMenuItems] = useState([]);
+  const [ingredientItems, setIngredientItems] = useState([]);
+  const{IngredientState,getIngredients}=useIngredient();
   const [quantityPerServing, setQuantityPerServing] = useState<number>(3); 
   const{menuIngredientAction,MenuIngredientState,createMenuIngredient}=useMenuIngredient();
   const [selectedValue, setSelectedValue] = useState(null); // Add selectedValue state
@@ -40,15 +42,12 @@ const MenuDropdown = ({ recvievedMenuId }) => {
     }
   };
 
-  const { data: menuData, refetch: getMenuHttp } = useGet({
-    path: 'IngredientService/GetAll',
-  });
-
   useEffect(() => {
-    if (menuData && menuData.result && menuData.result.items) {
-      setMenuItems(menuData.result.items);
+    getIngredients()
+    if (IngredientState) {
+      setIngredientItems(IngredientState);
     }
-  }, [menuData]);
+  }, []);
 
   const handleSubmit = () => {
     if (selectedValue) { // Check if a value is selected
@@ -68,7 +67,7 @@ const MenuDropdown = ({ recvievedMenuId }) => {
   return (
     <div>
       <Select id="menuSelect" placeholder="Select a menu item" onChange={handleSelectChange} value={selectedValue}>
-        {menuItems.map((menuItem) => (
+        {ingredientItems.map((menuItem) => (
           <Option key={menuItem.id} value={menuItem.id}>
             {menuItem.name}
           </Option>

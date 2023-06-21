@@ -4,34 +4,51 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import styles from './styles.module.css';
 import { usePersons } from '../../Providers/personRegistration';
+import { useIngredient } from '../../Providers/Ingredients';
+import { Ingredient } from '../../Providers/Ingredients/context';
+import { IPerson } from '../../Providers/personRegistration/AuthContext';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Item } = Menu;
 
 const StudentDetails: React.FC = () => {
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
+  const [student,setStudent] = useState<IPerson>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [addStudentAllergiesVisible, setAddStudentAllergiesVisible] = useState<boolean>(false);
-  const [students, setStudents] = useState<any[]>([]);
   const router = useRouter();
-  const{FetchStatePerson,getStudents} = usePersons();
-  const id = router.query;
+  const{FetchStatePerson,getStudents,getStudentById,PersonFetched} = usePersons<any>();
+  const{getIngredients,IngredientState} = useIngredient()
+  const {id} = router.query;
+
   useEffect(() => {
     // fetchStudents();
-    getStudents()
+    getStudents();
+    getStudentById(id?.toString());
+    getIngredients();
+    if (PersonFetched) {
+      setStudent(PersonFetched);
+    }
   }, []);
+  console.log('person with id ',PersonFetched)
 
-  const fetchStudents = () => {
-    axios
-      .get('https://api.example.com/students')
-      .then((response) => setStudents(response.data))
-      .catch((error) => console.error('Error fetching students:', error));
-  };
+ // ...
 
-  const handleStudentClick = (student: any) => {
-    setSelectedStudent(student);
-    setModalVisible(true);
-  };
+ useEffect(() => {
+  const filteredStudent = selectedStudent?.IndexOf(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19');
+  if (student && id) {
+    const filteredStudent = selectedStudent?.IndexOf(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19');
+    setSelectedStudent(filteredStudent);
+    console.log('filteres effed',filteredStudent);
+  }
+  console.log('filteres effed',filteredStudent);
+}, [student, id]);
+
+
+// ...
+
+console.log('ingred',IngredientState)
+console.log('fetvh',PersonFetched);
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -63,7 +80,7 @@ console.log('foun',FetchStatePerson)
       title: 'Actions',
       key: 'actions',
       render: (text: any, record: any) => (
-        <Button type="link" onClick={() => handleStudentClick(record)}>
+        <Button type="link">
           View Details
         </Button>
       ),
@@ -91,7 +108,7 @@ console.log('foun',FetchStatePerson)
           </Menu>
         </Header>
         <Content className={styles.content}>
-          <Table columns={columns} dataSource={students} rowKey="id" />
+          <Table columns={columns} dataSource={selectedStudent} rowKey="id" />
 
           {/* Student Details Modal */}
           {selectedStudent && (
@@ -119,7 +136,7 @@ console.log('foun',FetchStatePerson)
               </p>
               <p>
                 <b>Surname: </b>
-                {selectedStudent.surname}
+                {selectedStudent?.surname}
               </p>
               <p>
                 <b>ID Number: </b>
@@ -139,7 +156,7 @@ console.log('foun',FetchStatePerson)
               </p>
               <p>
                 <b>Address: </b>
-                {`${selectedStudent.address.streetName}, ${selectedStudent.address.city}, ${selectedStudent.address.postalCode}, ${selectedStudent.address.country}`}
+                {`${selectedStudent?.address?.streetName}`}
               </p>
             </Modal>
           )}
@@ -160,6 +177,7 @@ console.log('foun',FetchStatePerson)
               </Form.Item>
             </Form>
           </Modal>
+        {/* <p>  {selectedStudent?.map(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19')}</p> */}
         </Content>
         <Footer className={styles.footer}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>

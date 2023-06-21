@@ -9,7 +9,7 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top',
+      position: 'bottom',
     },
     title: {
       display: true,
@@ -29,13 +29,11 @@ export function App() {
 
   const chartData = {
     labels: apiData?.result.map(item => item.name) || [],
-    datasets: [
-      {
-        label: 'Quantity',
-        data: apiData?.result.map(item => item.quantity) || [],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
+    datasets: apiData?.result.map(item => ({
+      label: item.name,
+      data: item.batchInformation.map(batch => batch.quantity),
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    })) || [],
   };
 
   return <Bar options={options} data={chartData} />;
