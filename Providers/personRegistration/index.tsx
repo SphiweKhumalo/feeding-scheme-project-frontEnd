@@ -75,14 +75,16 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
   
-  const { data: students, loading ,refetch:getStudentsHttp} = useGet<any[]>({
+  const { data: students  ,refetch:getStudentsHttp} = useGet<any[]>({
     path: 'Student/GetAll',
   });
-const getStudents = async (payload)  => 
+const getStudents = async ()  => 
 {
   getStudentsHttp();
   dispatch(getPersonsRequestAction(students))
+ 
 }
+console.log('index Provider',students)
   const getAllPerson = async (payload : IPersonLogin) =>
   {
     const url = 'https://localhost:44311/api/services/app/PersonService/getAll';

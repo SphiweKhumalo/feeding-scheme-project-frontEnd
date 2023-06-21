@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Table, message } from 'antd';
 import { useGet } from 'restful-react';
 import styles from './styles.module.css';
+import { Bar } from 'react-chartjs-2';
+
 
 interface BatchCardProps {}
 
@@ -116,3 +118,4 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
 };
 
 export default DepletingBatch;
+

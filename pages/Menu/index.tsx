@@ -146,7 +146,7 @@ const App: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={["dashboard"]} mode="inline">
           {items.map((item) => (
@@ -159,7 +159,7 @@ const App: React.FC = () => {
             </Menu.Item>
           ))}
         </Menu>
-      </Sider>
+      </Sider> */}
       <Layout className={styles.centerLayout}>
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '0 16px' }}>

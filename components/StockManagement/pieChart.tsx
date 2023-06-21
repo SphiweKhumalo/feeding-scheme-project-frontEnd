@@ -10,6 +10,8 @@ import { ProCard, StatisticCard } from '@ant-design/pro-components';
 import RcResizeObserver from 'rc-resize-observer';
 import { useGet } from "restful-react";
 import { Router, useRouter } from "next/router";
+import { BarGraph, Graph } from "./BarGraph/App";
+
 
 const { Header, Content, Footer } = Layout;
 
@@ -71,12 +73,12 @@ const Piechart: React.FC = () => {
                 }}
               >
                 <ProCard
-                  title="Fresh Stock Levels"
-                  extra="September 28, 2019, Friday"
-                  split={responsive ? 'horizontal' : 'vertical'}
-                  headerBordered
-                  bordered
-                >
+                   title="Fresh Stock Levels"
+                    extra={new Date().toLocaleDateString()} // Display current date
+                      split={responsive ? 'horizontal' : 'vertical'}
+                       headerBordered
+                     bordered
+                        >
                   <ProCard split="horizontal">
                     <ProCard split="horizontal">
                       {batchData?.result.map((batch) => (
@@ -110,6 +112,7 @@ const Piechart: React.FC = () => {
                   </ProCard>
                 </ProCard>
               </RcResizeObserver>
+              {/* <BarGraph /> */}
             </div>
           </div>
         </Content>

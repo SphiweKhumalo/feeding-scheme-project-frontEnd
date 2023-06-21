@@ -85,6 +85,7 @@ const MenuIngredient: React.FC = () => {
               cover={<img alt="example" src={null} />}
             >
               <Meta title={a?.name} description={a?.Group} />
+              <Meta title={a?.quantityPerServing} description={a?.quantityPerServing} />
               <span onClick={() => handleDeleteClick(a)}>
                 <DeleteOutlined />
               </span>

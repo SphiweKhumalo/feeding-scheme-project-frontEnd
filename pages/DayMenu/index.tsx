@@ -94,17 +94,17 @@ console.log('allergic',allergicStudents)
   };
 
   return (
-    <Layout className="layout">
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
+    <Layout style={{backgroundColor:'goldenrod'}}className="layout">
+      {/* <Header style={{ display: 'flex', alignItems: 'center' }}>
         <div className="demo-logo" />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
           <Item key="1">Day Section</Item>
         </Menu>
-      </Header>
+      </Header> */}
       <Content className={styles.ContentContainer}>
         <div className={styles.divLeft}>
           <h1 style={{ fontSize: 50 }}>
-            <b>Menu For The Day: </b>
+            <b style={{color:'whitesmoke'}}>Menu For The Day: </b>
             <u>{menuData?.result.name}</u>
           </h1>
           <img src={menuData?.result.imageUrl} />

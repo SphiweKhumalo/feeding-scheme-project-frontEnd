@@ -3,19 +3,22 @@ import { Layout, Menu, Modal, Form, Input, Button, Select, Table } from 'antd';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import styles from './styles.module.css';
+import { usePersons } from '../../Providers/personRegistration';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Item } = Menu;
 
 const StudentDetails: React.FC = () => {
-  const router = useRouter();
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [addStudentAllergiesVisible, setAddStudentAllergiesVisible] = useState<boolean>(false);
   const [students, setStudents] = useState<any[]>([]);
-
+  const router = useRouter();
+  const{FetchStatePerson,getStudents} = usePersons();
+  const id = router.query;
   useEffect(() => {
-    fetchStudents();
+    // fetchStudents();
+    getStudents()
   }, []);
 
   const fetchStudents = () => {
@@ -47,6 +50,10 @@ const StudentDetails: React.FC = () => {
     console.log('Add Student Allergies:', values);
     setAddStudentAllergiesVisible(false);
   };
+
+  //filter students
+  // var student = FetchStatePerson?.find(a => id.toString() === a.userId.toString());
+console.log('foun',FetchStatePerson)
 
   const columns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },

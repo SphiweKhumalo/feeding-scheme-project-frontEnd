@@ -8,6 +8,7 @@ import { usePersons } from '../../Providers/personRegistration';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
 import Sider from 'antd/es/layout/Sider';
 import StudentDetails from '../StudentDetails/index[id]';
+import { App } from '../../components/StockManagement/BarGraph/App';
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
@@ -89,7 +90,7 @@ const Students: React.FC = () => {
   const handleStudentClick = (student: any) => {
     setSelectedStudent(student);
     setModalVisible(true);
-    router.push(`/StudentDetails/${student.id}`);
+    // router.push(`/StudentDetails/${student.id}`);
   };
 
   const handleCloseModal = () => {
@@ -156,7 +157,7 @@ const Students: React.FC = () => {
         >
           <p>
             <b>Ingredient: </b>
-            {selectedStudent.ingredientName.map((ingredient, index) => (
+            {selectedStudent?.result.map((ingredient, index) => (
               <li key={index}>{ingredient}</li>
             ))}
           </p>
@@ -273,7 +274,7 @@ const Students: React.FC = () => {
         </Form>
 </Modal>
       <Table columns={columns} dataSource={students?.result} loading={loading} rowKey="id" />
-    
+      <App />
     </Layout>
   );
 };

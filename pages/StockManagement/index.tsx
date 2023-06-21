@@ -15,6 +15,7 @@ import BarChart from '../../components/StockManagement/batchTable';
 import BatchInformation from '../../components/StockManagement/batchTable';
 import Piechart from '../../components/StockManagement/pieChart';
 import AddBatchPopup from '../../components/StockManagement/Add Batch/AddBatch';
+import { App, MyBar } from '../../components/StockManagement/BarGraph/App';
 // import { useBatchInformation } from '../../Providers/BatchInformation';
 
 const { Header, Content, Footer } = Layout;
@@ -94,6 +95,7 @@ useEffect(() =>
             {/* <BatchInformation /> */}
             <Piechart />
         </div>
+        <App />
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
     </Layout>
