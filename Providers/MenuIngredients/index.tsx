@@ -110,25 +110,29 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   //   }
   // };
 
-  const deleteMenuIngredient = async (menuId:string,ingredientId:string) =>{
-  await fetch(`https://localhost:44311/DeleteMenuIngredient?menuId=${menuId}&ingredientId=${ingredientId}`, {
+  const deleteMenuIngredient = async (menuId: string, ingredientId: string) => {
+    try {
+      const response = await fetch(`https://localhost:44311/api/services/app/MenuIngredientService/DeleteMenuIngredient?menuId=${menuId}&ingredientId=${ingredientId}`, {
         method: 'DELETE',
-        cache:'no-cache',
-        headers:{
-            "Content-Type": "application/json"
+        cache: 'no-cache',
+        headers: {
+          "Content-Type": "application/json"
         },
-    }).then( returnedResult =>{
-        returnedResult.json()
-      .then( finalData => {
-            console.log('-----print',finalData)
-            if(finalData.success){
-                dispatch(deleteMenuIngredientRequestAction(finalData));
-            }else if(finalData.error){
-              console.error("Menu Ingredient deletion error:", finalData.error);
-            }
-        })
-    })
-}
+      });
+  
+      const finalData = await response.json();
+      console.log('-----print', finalData);
+  
+      if (finalData.success) {
+        dispatch(deleteMenuIngredientRequestAction(finalData));
+      } else if (finalData.error) {
+        console.error("Menu Ingredient deletion error:", finalData.error);
+      }
+    } catch (error) {
+      console.error("An error occurred while deleting the menu ingredient:", error);
+    }
+  };
+  
 
 
 

@@ -15,11 +15,12 @@ import {
   DeleteOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Col, Divider, Row, Card, Button, Modal, Form, Input } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Col, Divider, Row, Card, Button, Modal, Form, Input, Tabs } from 'antd';
 import { IMenu } from '../../Providers/Menu/context';
 import { Console } from 'console';
 import StockManagement from '../StockManagement';
 import Link from 'next/link';
+import MenuDrawer from '../../components/menuDrawer/MenuDrawer';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -54,46 +55,6 @@ type MenuOptions = {
   icon: JSX.Element;
   path: string;
 };
-
-const items: MenuOptions[] = [
-  // getItem('Menu Management', '1', <ClockCircleOutlined />,
-  //   [
-  //     getItem('View Menus', 'sub1'),
-  //     getItem('Day Menu', 'sub2'),
-  //   ]),
-  // getItem('Stock Management 2', '2', <DesktopOutlined />),
-  // getItem('User', 'sub3', <UserOutlined />, [
-  //   getItem('Tomas Mabena', '3')
-  // ]),
-  // getItem('Team', 'sub4', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  // getItem('Files', '9', <FileOutlined />),
-  {
-    key: "VolunteerDashboard",
-    title: "Home",
-    icon: <HomeOutlined />,
-    path: "/VolunteerDashboard",
-  },
-    {
-    key: "DayMenu",
-    title: "Day Menu",
-    icon: <MessageOutlined />,
-    path: "/DayMenu",
-  },
-
-  {
-    key: "StockManagement",
-    title: "StockManagement",
-    icon: <MessageOutlined />,
-    path: "/StockManagement",
-  },
-  {
-    key: "Students",
-    title: "Students",
-    icon: <SettingOutlined />,
-    path: "/StudentManagement",
-  },
-];
-
 
 const App: React.FC = () => {
   const { menusAction, MenuState,createMenu} = useMenu();
@@ -146,32 +107,16 @@ const App: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={["dashboard"]} mode="inline">
-          {items.map((item) => (
-            <Menu.Item
-              key={item.key}
-              icon={item.icon}
-              onClick={() => handleDayMenuClick(item.path)}
-            >
-              <Link href={item.path}>{item.title}</Link>
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Sider> */}
-      <Layout className={styles.centerLayout}>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+      {/* <Layout className={styles.centerLayout}> */}
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item >User</Breadcrumb.Item>
-            {/* <Breadcrumb.Item>Bill</Breadcrumb.Item> */}
-          </Breadcrumb>
           <div className={styles.cardDiv}>
             <>
-              <Divider orientation="left">Menu List</Divider>
+              <Divider orientation="left"><h1 className={styles.MenuName} >Menu List</h1></Divider>
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <span className={styles.spanStyling}><Button type="primary" onClick={handleButtonClick}>Add NewMenu</Button></span>
+                <span className={styles.spanStyling}>
+                  <Button className ={styles.AddMenu}type="primary" onClick={handleButtonClick}>Add New Menu</Button>
+                  <MenuDrawer />
+                  </span>
                 
                 {MenuState?.map((a, index) =>
                   <Card
@@ -181,10 +126,13 @@ const App: React.FC = () => {
                     key={index}
                     onClick={() => handleMenuClick(a.id)}
                   >
-                    <Meta title={a.name} description={a?.type} />
-                    <Meta title='ServingTime' description={a?.servingTime} />
+                     <section className={styles.CardSectionStyling}>
+                        <Meta description={<span style={{ color: 'rgb(224, 112, 46)' }}>Day {a.day}</span>} />
+                        <Meta title={<span style={{ color: 'whitesmoke',  'fontWeight': 'bold' }}>{a.name}</span>} description={<span style={{ color: 'whitesmoke' }}>{a?.day}</span>} />
+                        <Meta title={<span style={{ color: 'whitesmoke','fontWeight': 'bold' }}>ServingTime</span>} description={<span style={{ color: 'whitesmoke' }}>{a?.servingTime}</span>} />
+                      </section>    
                     <span onClick={() => handleDeleteClick(a.id)}> 
-                       <DeleteOutlined />
+                       <DeleteOutlined className= {styles.deleteStyling} rev={undefined} />
                     </span>
                   </Card>
                 )}
@@ -193,7 +141,7 @@ const App: React.FC = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-      </Layout>
+      {/* </Layout> */}
       <Modal
         visible={modalVisible}
         onCancel={handleModalCancel}

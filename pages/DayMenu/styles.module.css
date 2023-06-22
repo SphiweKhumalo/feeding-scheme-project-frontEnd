@@ -1,8 +1,12 @@
 .MenuContainer
 {
-    width: 200px;
+    width: 30rem;
     margin: 3rem;
-    border: 2px solid green;
+    border: transparent;
+    border-radius: 12px;
+    background-color: rgb(224, 112, 46);
+    padding: 1rem;
+    margin: auto;
 }
 
 .ContentContainer{
@@ -14,7 +18,6 @@
     border: 2px solid red;
     width: 100%;
     padding:6rem;
-
   }
   
 .divRight {
@@ -38,3 +41,53 @@
 {
     color:aqua;
 }
+
+.HeadStyling
+{
+ font-size: 3rem;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  font-family: 'Times New Roman', serif;
+}
+.SSX
+{
+      color: rgb(77, 69, 202);
+}
+
+.LayoutStyling
+{
+    background-color: rgb(38, 48, 68)
+}
+.StudentAllergies 
+{
+    height:10;
+     padding:100
+}
+
+.StudentAllergies :hover
+{
+ color: rgb(224, 112, 46);
+ /* border: 2px solid rgb(224, 112, 46); */
+}
+.StudentsEatingStyling
+{
+    margin:auto;
+    color:aliceblue;
+    /* background-color: gray; */
+    border-radius: 12px;
+}
+.StudentAllergiesContainer 
+{
+    /* border: 2px solid red; */
+    display:flex;
+}
+.imageContainer
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
+

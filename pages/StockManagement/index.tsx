@@ -19,6 +19,8 @@ import { App, MyBar } from '../../components/StockManagement/BarGraph/App';
 import { DepletingStockPieChart } from '../../components/StockManagement/DepletingStockPieChart/depletingStockPieChart';
 import DepletingBatch from '../BatchInformation/[id]';
 import { DepletingStock } from '../../components/StockManagement/BarGraphDepletingStock/App';
+import ResizableBox from '../../components/StockManagement/BatchInformationStackedBarGraph/ResizableBox';
+import BarStacked from '../../components/StockManagement/BatchInformationStackedBarGraph/BarStacked';
 // import { useBatchInformation } from '../../Providers/BatchInformation';
 
 const { Header, Content, Footer } = Layout;
@@ -102,6 +104,7 @@ useEffect(() =>
         </div>
         <App />
       </Content>
+      <BarStacked />
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
     </Layout>
   );

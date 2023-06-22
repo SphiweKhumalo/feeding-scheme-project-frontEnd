@@ -76,8 +76,8 @@ const MyLayout: React.FC = ({ children }) => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: 'gray' }} />
-        <Content style={{ margin: '0 16px' }}>
+        {/* <Header style={{ padding: 0, background: 'gray' }} /> */}
+        {/* <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
@@ -85,7 +85,8 @@ const MyLayout: React.FC = ({ children }) => {
           <div style={{ padding: 24, minHeight: 360, background: 'gray' }}>
             {children}
           </div>
-        </Content>
+        </Content> */}
+        {children}
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>
     </Layout>

@@ -21,6 +21,7 @@ const DayMenuInformation: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const{getStudents,PersonLoggedIn,FetchStatePerson} = usePersons();
+  const [searchValue, setSearchValue] = useState('');
   const { data: menuData, refetch: getDayMenu } = useGet<any[]>({
     path: 'MenuService/getMenuForTheDay',
   });
@@ -28,21 +29,22 @@ const DayMenuInformation: React.FC = () => {
     path: `MenuService/GetStudentsAllergicByMenu?id=${menuData?.result.id}`,
   });
   const { data: eatingResults, refetch: geteatingResults } = useGet<any[]>({
-    path: 'MenuService/GetStudentEatingAndNotEatingByMenu?id=d592360f-f7e5-45c3-df00-08db6b3741f1',
-  });    //remove
-  // const { data: percentage, refetch: getPercentage } = useGet<any[]>({
-  //   path: `MenuService/GetPercentageOfStudentsAllergicByMenu?id=${percentage.result}`,
-  // });
-
-  // const { data: quantityPerServing, refetch: getQuantityPerServing } = useGet<any[]>({
-  //   path: `MenuService/GetQuantityPerServingByMenu?menuId=${menuData?.result.id}`,
-  // }); 
+    path: `MenuService/GetStudentEatingAndNotEatingByMenu?id=${menuData?.result.id}`,
+  });  
   const { data: quantityPerServing, refetch: getQuantityPerServing } = useGet<any[]>({
-    path: 'MenuService/GetQuantityPerServingByMenu?menuId=d592360f-f7e5-45c3-df00-08db6b3741f1',
-  }); 
+    path: `MenuService/GetQuantityPerServingByMenu?menuId=${menuData?.result.id}`,
+  });
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
+  
+  const filteredStudents = allergicStudents.result?.filter((student) =>
+    `${student.name} ${student.surname}`.toLowerCase().includes(searchValue.toLowerCase())
+  );
+   
   useEffect(() => {
-    getallergicStudentsData();
     getDayMenu();
+    getallergicStudentsData();
     geteatingResults();
     getQuantityPerServing()
 
@@ -94,77 +96,61 @@ console.log('allergic',allergicStudents)
   };
 
   return (
-    <Layout style={{backgroundColor:'goldenrod'}}className="layout">
-      {/* <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Item key="1">Day Section</Item>
-        </Menu>
-      </Header> */}
+    <Layout className={styles.LayoutStyling}>
       <Content className={styles.ContentContainer}>
         <div className={styles.divLeft}>
-          <h1 style={{ fontSize: 50 }}>
-            <b style={{color:'whitesmoke'}}>Menu For The Day: </b>
-            <u>{menuData?.result.name}</u>
+          <h1 className={styles.HeadStyling}>
+            Menu For The Day:   {menuData?.result.name}
           </h1>
-          <img src={menuData?.result.imageUrl} />
-          <h1>Quantitites based on students number</h1>
+          <div className={styles.imageContainer}>
+            <img className={styles.imgStyling} src={menuData?.result.imageUrl} />
+          </div>
+          <h1 className={styles.HeadStyling} >Quantitities based on students number</h1>
 
           <List
+           className={styles.MenuContainer}
             itemLayout="horizontal"
             dataSource={quantityPerServing?.result}
            renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              title={item.ingredientName}
-              description={`Quantity: ${item.sumQuantityPerServing}`}
+              title={<span style ={{color:'white'}}>{item.ingredientName}</span>}
+              description={<span style ={{color:'white'}}>Quantity: {item.sumQuantityPerServing}</span>}
+              style ={{color:'white'}}
             />
           </List.Item>
 
       )}
     />
-          <h2>Student Allergies</h2>
+          <h2 className={styles.HeadStyling}>Student Allergies</h2>
         
-          <div style ={{height:'10',display:'flex',padding:'100'}}>
+          <div className={styles.StudentAllergiesContainer}>
             
-           <span>
-             <Title level={1}>Students Allergic</Title>
+           <span className={styles.StudentsEatingStyling}>
+             <Title style ={{color:'white'}}level={1}>Students Allergic</Title>
                <Result
                 icon={<FrownOutlined />}
-                title={`Student Allergic: ${eatingResults?.result?.notEating}`}
+                title={<span style={{ color: 'white' }}>{eatingResults?.result?.notEating}</span>}
                />  
            </span>
-           <span>
-              <Title level={1}>Plate to Prepare Allergic:</Title>
+           <span className={styles.StudentsEatingStyling}>
+              <Title style ={{color:'white'}} level={1}>Plates to Prepare Allergic:</Title>
                  <Result
                   icon={<SmileOutlined />}
-                  title={`Plate to Prepare: ${eatingResults?.result?.eating}`}
+                  title={<span style={{ color: 'white' }}>{eatingResults?.result?.eating}</span>}
               />
            </span>
-
-         
           </div>
-          <Card title="Student Allergies">
-            {allergicStudents.result?.map((student) => (
-              <Card key={student.studentId} onClick={() => handleStudentClick(student)}>
-                <p  className={styles.ModalStyling}>
-                  <b>{student.name} {student.surname} Grade: {student.grade}</b>
-                </p>
-                {/* <p>
-                  <b>Ingredient: </b>
-                  {student.ingredientName[0]}
-                </p>
-                <p>
-                  <b>Reaction: </b>
-                  {student.reactions[0]}
-                </p>
-                <p>
-                  <b>Treatment: </b>
-                  {student.treatements[0]}
-                </p>
-                <p>length: {allergicStudents.length}</p> */}
-              </Card>
-            ))}
+          <Card title="Student Allergies"className={styles.StudentAllergies}>
+            <input type="text" value={searchValue} onChange={handleSearch} placeholder="Search students..." />
+              {filteredStudents?.map((student) => (
+            <Card key={student.studentId} onClick={() => handleStudentClick(student)}>
+               <p className={styles.ModalStyling}>
+               <b>{student.name} {student.surname} Grade: {student.grade}</b>
+              </p>
+              {/* Rest of the card content */}
+            </Card>
+             ))}
           </Card>
 
           <h2>Alternative Food</h2>

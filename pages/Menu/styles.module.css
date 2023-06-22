@@ -1,22 +1,60 @@
 .MenuContainer
 {
-    width: 200px;
+    width: 220px;
     margin: 2rem;
+    background-color: rgb(8, 15, 53);
+    color:rgb(224, 112, 46);
+    border: none; 
 }
 .spanStyling
 {
-    border: 2px solid blue;
-    text-align: center;
+    /* border: 2px solid blue; */
     width:100%;
+    padding-left: 2rem;
 }
 .centerLayout
 {
-    background-color: gray
+    background-color: rgb(38, 48, 68)
 }
 
 .cardDiv
 {
     padding: 24;
-    min-height: 360;
-    background-color: rgba(197, 169, 12, 0.425) ;
+    max-height: 360;
+    background-color: rgb(36, 41, 70);
+    padding: 2rem;
+}
+
+.CardSectionStyling
+{
+   color:white; 
+}
+.MenuName {
+    font-weight: bold;
+    font-size: 3rem;
+    color: rgb(224, 112, 46);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: transform 0.3s ease-in-out;
+    /* border: 2px solid red; */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+.MenuName:hover {
+  transform: scale(1.05);
+}
+
+.deleteStyling{
+    font-size: 22px; 
+    margin-top: 12px;
+}
+.AddMenu
+{
+    background-color:rgb(224, 112, 46);
+    margin-right: 1rem;
 }
