@@ -21,6 +21,9 @@ import { Console } from 'console';
 import StockManagement from '../StockManagement';
 import Link from 'next/link';
 import MenuDrawer from '../../components/menuDrawer/MenuDrawer';
+import getDayOfWeek from '../../utils/getDayOfWeek';
+import getMealTime from '../../utils/getMealTime';
+// import{getDayOfWeek} from '../../utils/getDayOfWeek';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -62,7 +65,7 @@ const App: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [formValues, setFormValues] = useState({});
   const router = useRouter();
-
+ 
   useEffect(() => {
     menusAction();
     console.log('menu stste',MenuState)
@@ -127,9 +130,9 @@ const App: React.FC = () => {
                     onClick={() => handleMenuClick(a.id)}
                   >
                      <section className={styles.CardSectionStyling}>
-                        <Meta description={<span style={{ color: 'rgb(224, 112, 46)' }}>Day {a.day}</span>} />
+                        <Meta description={<span style={{ color: 'rgb(224, 112, 46)' }}>Day: {getDayOfWeek(a.day)}</span>} />
                         <Meta title={<span style={{ color: 'whitesmoke',  'fontWeight': 'bold' }}>{a.name}</span>} description={<span style={{ color: 'whitesmoke' }}>{a?.day}</span>} />
-                        <Meta title={<span style={{ color: 'whitesmoke','fontWeight': 'bold' }}>ServingTime</span>} description={<span style={{ color: 'whitesmoke' }}>{a?.servingTime}</span>} />
+                        <Meta title={<span style={{ color: 'whitesmoke','fontWeight': 'bold' }}>ServingTime</span>} description={<span style={{ color: 'whitesmoke' }}>{getMealTime(a?.servingTime)}</span>} />
                       </section>    
                     <span onClick={() => handleDeleteClick(a.id)}> 
                        <DeleteOutlined className= {styles.deleteStyling} rev={undefined} />

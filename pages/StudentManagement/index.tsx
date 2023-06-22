@@ -8,7 +8,7 @@ import { usePersons } from '../../Providers/personRegistration';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
 import Sider from 'antd/es/layout/Sider';
 import StudentDetails from '../StudentDetails/index[id]';
-import { App } from '../../components/StockManagement/BarGraph/App';
+import { App } from '../../components/StockManagement/GetBatchInformationByIngredient/App';
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;

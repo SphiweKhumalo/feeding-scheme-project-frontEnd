@@ -18,7 +18,7 @@ const options = {
   },
 };
 
-export function App() {
+export function BatchInformationByIngredient() {
   const { data: apiData, refetch: fetchData } = useGet({
     path: 'BatchInformationService/GetBatchInformationByIngredient',
   });

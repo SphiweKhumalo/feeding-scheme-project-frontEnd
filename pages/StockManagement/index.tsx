@@ -9,18 +9,17 @@ import MenuDropdown from '../../components/IngredientsList/ingredient';
 import {DeleteOutlined} from '@ant-design/icons';
 import { IMenuIngredient, MenuIngredientActionContext } from '../../Providers/MenuIngredients/context';
 import { useMenuIngredient } from '../../Providers/MenuIngredients';
-import BatchTable from '../../components/StockManagement/depletingStock/DepletingBatch';
+import DepletingBatch from '../../components/StockManagement/DepletingBatchesByStock/DepletingBatchesByStock';
 import MyChartComponent from '../../components/StockManagement/batchTable';
 import BarChart from '../../components/StockManagement/batchTable';
 import BatchInformation from '../../components/StockManagement/batchTable';
 import Piechart from '../../components/StockManagement/pieChart';
 import AddBatchPopup from '../../components/StockManagement/Add Batch/AddBatch';
-import { App, MyBar } from '../../components/StockManagement/BarGraph/App';
+import { App, BatchInformationByIngredient } from '../../components/StockManagement/GetBatchInformationByIngredient/App';
 import { DepletingStockPieChart } from '../../components/StockManagement/DepletingStockPieChart/depletingStockPieChart';
-import DepletingBatch from '../BatchInformation/[id]';
-import { DepletingStock } from '../../components/StockManagement/BarGraphDepletingStock/App';
-import ResizableBox from '../../components/StockManagement/BatchInformationStackedBarGraph/ResizableBox';
 import BarStacked from '../../components/StockManagement/BatchInformationStackedBarGraph/BarStacked';
+import { StockExpiringSoon } from '../../components/StockManagement/BarGraphStockExpiringSoon/App';
+import StackedGraph from '../../components/StockManagement/Stacked/stackedgraph';
 // import { useBatchInformation } from '../../Providers/BatchInformation';
 
 const { Header, Content, Footer } = Layout;
@@ -89,22 +88,27 @@ useEffect(() =>
       <Content className={styles.ContentContainer}>
        
         <div className={styles.divLeft}>
-        <h1 style = {{color:'red'}}>Depleting Batches(under:300)</h1>
+        <h1>Depleting Batches(under:300)</h1>
         <button onClick={handleOpenPopup}>Open Popup</button>
-      <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} />
-           <BatchTable />
+        <section className={styles.BarSection}>
+           <DepletingBatch />
+          
+        </section>
+        <section className={styles.BarSection}>
+          <StockExpiringSoon />
+        </section>
+        <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} /> 
         </div>
 
         <div className={styles.divRight}>
           <h1>Fresh Stock Levels</h1>
-            {/* <BatchInformation /> */}
             <Piechart />
-            <DepletingStock />
+            
             {/* <DepletingStockPieChart /> */}
         </div>
-        <App />
+        <BatchInformationByIngredient />
+        <StackedGraph />
       </Content>
-      <BarStacked />
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
     </Layout>
   );

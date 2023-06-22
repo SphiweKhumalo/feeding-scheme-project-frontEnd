@@ -2,7 +2,7 @@
   import { Bar } from "react-chartjs-2";
   import { useGet } from "restful-react";
 
-  export function DepletingStock() {
+  export function StockExpiringSoon() {
     const { data: apiData, refetch: fetchData } = useGet({
       path: 'BatchInformationService/StockExpiringSoon',
     });
@@ -22,5 +22,5 @@
       ],
     };
 
-    return <Bar options={null} data={chartData} />;
+    return <Bar options={null} data={chartData} style={{ width: '30%', height: '100px' }}/>;
   }

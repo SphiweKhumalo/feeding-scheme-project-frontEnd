@@ -14,7 +14,11 @@
     border: 2px solid red;
     width: 100%;
     padding:6rem;
-
+    height: auto;
+    background-color: rgb(38, 48, 68);
+    display: fled;
+    flex-direction: row;
+    color: wheat;
   }
   
 .divRight {
@@ -23,6 +27,7 @@
     width: 100%;
     background-color: rgb(3, 18, 31);
     color: white;
+    /* height: 50rem; */
 }
   
 .imageContainer
@@ -34,4 +39,15 @@
 {
     font-size: 3rem;
 }
+
+.BarSection {
+    border: 2px solid rgb(58, 9, 9);
+    width: auto;
+    height:auto;
+    display: flex;
+    flex-wrap: wrap;  /* Add this property to wrap the content */
+
+    /* Add other necessary styles */
+}
+
 
