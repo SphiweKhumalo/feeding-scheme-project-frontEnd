@@ -20,6 +20,7 @@ import { DepletingStockPieChart } from '../../components/StockManagement/Depleti
 import BarStacked from '../../components/StockManagement/BatchInformationStackedBarGraph/BarStacked';
 import { StockExpiringSoon } from '../../components/StockManagement/BarGraphStockExpiringSoon/App';
 import StackedGraph from '../../components/StockManagement/Stacked/stackedgraph';
+import Meta from 'antd/es/card/Meta';
 // import { useBatchInformation } from '../../Providers/BatchInformation';
 
 const { Header, Content, Footer } = Layout;
@@ -90,22 +91,28 @@ useEffect(() =>
         <div className={styles.divLeft}>
         <h1>Depleting Batches(under:300)</h1>
         <button onClick={handleOpenPopup}>Open Popup</button>
+        <Card>
+          <Meta title="Depleting Batch" />
+          <section className={styles.BarSection}>
+            <DepletingBatch />
+          </section>
+        </Card>
+
+        <Card>
         <section className={styles.BarSection}>
-           <DepletingBatch />
-          
-        </section>
-        <section className={styles.BarSection}>
+          <h1>Stock Expiring Soon</h1>
           <StockExpiringSoon />
         </section>
         <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} /> 
+        </Card>
+      
         </div>
-
         <div className={styles.divRight}>
-          <h1>Fresh Stock Levels</h1>
-            <Piechart />
-            
-            {/* <DepletingStockPieChart /> */}
-        </div>
+        <Card>
+          <Meta title="Fresh Stock Levels" />
+          <Piechart />
+        </Card>
+      </div>
         <BatchInformationByIngredient />
         <StackedGraph />
       </Content>

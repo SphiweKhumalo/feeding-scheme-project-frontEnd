@@ -7,6 +7,8 @@ import { usePersons } from '../../Providers/personRegistration';
 import { useIngredient } from '../../Providers/Ingredients';
 import { Ingredient } from '../../Providers/Ingredients/context';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
+import CreateStudentAllergyForm from '../../components/studentAlllergies';
+import CreateStudentAllergyModal from '../../components/studentAlllergies';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Item } = Menu;
@@ -20,7 +22,7 @@ const StudentDetails: React.FC = () => {
   const{FetchStatePerson,getStudents,getStudentById,PersonFetched} = usePersons<any>();
   const{getIngredients,IngredientState} = useIngredient()
   const {id} = router.query;
-
+  const [createModalVisible, setCreateModalVisible] = useState(false);
   useEffect(() => {
     // fetchStudents();
     getStudents();
@@ -33,9 +35,9 @@ const StudentDetails: React.FC = () => {
   console.log('person with id ',PersonFetched)
 
  // ...
-
+ const filteredStudent = FetchStatePerson?.find(a=>a.id.toString()==id.toString());
  useEffect(() => {
-  const filteredStudent = selectedStudent?.IndexOf(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19');
+  const filteredStudent = FetchStatePerson?.find(a=>a.id=='5e69dfdb-abe5-43f9-2676-08db726ffd1a');
   if (student && id) {
     const filteredStudent = selectedStudent?.IndexOf(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19');
     setSelectedStudent(filteredStudent);
@@ -43,7 +45,7 @@ const StudentDetails: React.FC = () => {
   }
   console.log('filteres effed',filteredStudent);
 }, [student, id]);
-
+console.log('fil',filteredStudent);
 
 // ...
 
@@ -68,9 +70,15 @@ console.log('fetvh',PersonFetched);
     setAddStudentAllergiesVisible(false);
   };
 
+  const handleCreateModalSubmit = async (values: any) => {
+    console.log('Form Values:', values);
+    setCreateModalVisible(false);
+  };
+
+
   //filter students
   // var student = FetchStatePerson?.find(a => id.toString() === a.userId.toString());
-console.log('foun',FetchStatePerson)
+console.log('foun',FetchStatePerson);
 
   const columns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -92,9 +100,14 @@ console.log('foun',FetchStatePerson)
       <Sider width={200} theme="dark">
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['students']}>
           <Item key="students">Students</Item>
-          <Item key="addAllergies" onClick={handleAddStudentAllergiesClick}>
-            Add Student Allergies
-          </Item>
+          <CreateStudentAllergyModal
+            visible={createModalVisible}
+            onCancel={() => setCreateModalVisible(false)}
+             onSubmit={handleCreateModalSubmit}
+          />
+             <Button type="primary" onClick={() => setCreateModalVisible(true)}>
+                Open Create Modal
+            </Button>
         </Menu>
       </Sider>
       <Layout>
@@ -108,8 +121,7 @@ console.log('foun',FetchStatePerson)
           </Menu>
         </Header>
         <Content className={styles.content}>
-          <Table columns={columns} dataSource={selectedStudent} rowKey="id" />
-
+        <Table columns={columns} dataSource={[filteredStudent]} rowKey="id" />
           {/* Student Details Modal */}
           {selectedStudent && (
             <Modal
@@ -180,6 +192,7 @@ console.log('foun',FetchStatePerson)
         {/* <p>  {selectedStudent?.map(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19')}</p> */}
         </Content>
         <Footer className={styles.footer}>Ant Design ©2023 Created by Ant UED</Footer>
+        
       </Layout>
     </Layout>
   );

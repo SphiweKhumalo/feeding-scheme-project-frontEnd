@@ -1,58 +1,91 @@
-import { useState } from 'react';
-import { Form, Input, Button } from 'antd';
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, Button, DatePicker, Switch, Select } from 'antd';
+import { useIngredient } from '../../Providers/Ingredients';
 
-interface CreateStudentAllergyFormProps {
-  onSubmit: (values: any) => Promise<void>;
-}
 
-const CreateStudentAllergyForm: React.FC<CreateStudentAllergyFormProps> = ({ onSubmit }) => {
+const CreateStudentAllergyModal = ({ visible, onCancel, onSubmit }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (values: any) => {
-    setLoading(true);
-    await onSubmit(values);
-    setLoading(false);
+const{IngredientState,getIngredients}=useIngredient();
+  const handleSubmit = (values) => {
+    // Handle form submission here
+    onSubmit(values);
     form.resetFields();
   };
-
+  useEffect(()=>
+  {
+    getIngredients();
+  },[])
+console.log('ingre',IngredientState);
   return (
-    <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Form.Item
-        name="studentId"
-        label="Student ID"
-        rules={[{ required: true, message: 'Please enter the student ID' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="ingredientId"
-        label="Ingredient ID"
-        rules={[{ required: true, message: 'Please enter the ingredient ID' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="reaction"
-        label="Reaction"
-        rules={[{ required: true, message: 'Please enter the reaction' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="treatment"
-        label="Treatment"
-        rules={[{ required: true, message: 'Please enter the treatment' }]}
-      >
-        <Input />
-      </Form.Item>
+    <Modal
+      title="Create Student Allergy"
+      visible={visible}
+      onCancel={onCancel}
+      footer={null}
+    >
+      <Form form={form} onFinish={handleSubmit}>
       <Form.Item>
-        <Button type="primary" htmlType="submit" loading={loading}>
-          Create Allergy
-        </Button>
-      </Form.Item>
-    </Form>
+          <Button type="primary" htmlType="submit">
+            id
+          </Button>
+        </Form.Item>
+        <Form.Item
+          name="studentId"
+          label="Student ID"
+          rules={[{ required: true, message: 'Please enter the student ID' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="ingredientId"
+          label="Ingredient ID"
+          rules={[{ required: true, message: 'Please select the ingredient ID' }]}
+        >
+          <Select>
+            {IngredientState.map((option) => (
+              <Option key={option.id} value={option.id}>
+                {option.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="reaction"
+          label="Reaction"
+          rules={[{ required: true, message: 'Please enter the reaction' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="treatment"
+          label="Treatment"
+          rules={[{ required: true, message: 'Please enter the treatment' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="dateAdded"
+          label="Date Added"
+          rules={[{ required: true, message: 'Please select the date added' }]}
+        >
+          <DatePicker showTime />
+        </Form.Item>
+        <Form.Item
+          name="isCurrent"
+          label="Is Current"
+          valuePropName="checked"
+          rules={[{ required: true, message: 'Please select whether it is current or not' }]}
+        >
+          <Switch />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Create Allergy
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
   );
 };
 
-export default CreateStudentAllergyForm;
+export default CreateStudentAllergyModal;

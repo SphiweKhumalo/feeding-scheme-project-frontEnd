@@ -41,12 +41,13 @@
 }
 
 .BarSection {
+    background-color: white;
     border: 2px solid rgb(58, 9, 9);
     width: auto;
     height:auto;
     display: flex;
-    flex-wrap: wrap;  /* Add this property to wrap the content */
-
+    flex-wrap: wrap; 
+    font-size: 2rem;
     /* Add other necessary styles */
 }
 

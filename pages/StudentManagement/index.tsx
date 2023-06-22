@@ -7,8 +7,8 @@ import { useGet } from 'restful-react';
 import { usePersons } from '../../Providers/personRegistration';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
 import Sider from 'antd/es/layout/Sider';
-import StudentDetails from '../StudentDetails/index[id]';
-import { App } from '../../components/StockManagement/GetBatchInformationByIngredient/App';
+// import StudentDetails from '../StudentDetails/index[id]';
+
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
@@ -23,6 +23,8 @@ const Students: React.FC = () => {
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const{createPerson,FetchStatePerson,getStudents}=usePersons();
   const [addStudentVisible, setAddStudentVisible] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
+  const [filteredData, setFilteredData] = useState<any[]>([]);
 
   const { data: menuData, refetch: getDayMenu } = useGet<any[]>({
     path: 'MenuService/getMenuForTheDay',
@@ -36,6 +38,10 @@ const Students: React.FC = () => {
     getDayMenu();
     getStudents()
   }, []);
+
+  useEffect(() => {
+    filterStudents();
+  }, [searchText, FetchStatePerson]);
 
   useEffect(() => {
     if (allergicStudentsData) {
@@ -110,6 +116,23 @@ const Students: React.FC = () => {
     console.log('Add Student:', values);
     createPerson(values);
     setAddStudentVisible(false);
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchText(value);
+  };
+
+  const filterStudents = () => {
+    if (!searchText) {
+      setFilteredData(FetchStatePerson);
+    } else {
+      const filteredStudents = FetchStatePerson.filter(
+        (student: any) =>
+          student.name.toLowerCase().includes(searchText.toLowerCase()) ||
+          student.surname.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredData(filteredStudents);
+    }
   };
 
   return (
@@ -229,8 +252,15 @@ const Students: React.FC = () => {
           </Form.Item>
         </Form>
 </Modal>
-      <Table columns={columns} dataSource={FetchStatePerson} loading={false} rowKey="id" />
-      <App />
+<Input.Search
+            placeholder="Search students"
+            onSearch={handleSearch}
+            style={{ marginTop: '16px' }}
+          />
+      {/* <Table columns={columns} dataSource={FetchStatePerson} loading={false} rowKey="id" /> */}
+      <Table columns={columns} dataSource={filteredData} loading={false} rowKey="id" />
+
+      {/* <App /> */}
     </Layout>
   );
 };

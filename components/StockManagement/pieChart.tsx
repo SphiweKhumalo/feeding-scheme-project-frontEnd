@@ -37,16 +37,14 @@ const Piechart: React.FC = () => {
   }
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-
-        <Content style={{ height: "calc(80vh - 64px)", overflow: "auto" }}>
+    <Layout style={{ minHeight: "100vh",backgroundColor:'transparent' }}>
+      <Layout style={{ backgroundColor:'transparent' }}>
+        <Content style={{backgroundColor:'transparent', height: "calc(80vh - 64px)", overflow: "auto" }}>
           <div
             style={{
               padding: 24,
               minHeight: "80%",
-              background: colorBgContainer,
+              background: 'blue',
             }}
           >
             <div>
@@ -93,9 +91,6 @@ const Piechart: React.FC = () => {
             </div>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          GVMS ©2023 Created by Fair Enough
-        </Footer>
       </Layout>
     </Layout>
   );
