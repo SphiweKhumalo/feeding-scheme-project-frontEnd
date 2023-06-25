@@ -1,57 +1,89 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Modal, Form, Input, Button, Select, Table } from 'antd';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import styles from './styles.module.css';
 import { usePersons } from '../../Providers/personRegistration';
 import { useIngredient } from '../../Providers/Ingredients';
-import { Ingredient } from '../../Providers/Ingredients/context';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
-import CreateStudentAllergyForm from '../../components/studentAlllergies';
-import CreateStudentAllergyModal from '../../components/studentAlllergies';
+import CreateStudentAllergyModal from '../../components/StudentAlllergies';
+import withAuth from '../login/hoc/withAuth';
+import { useStudentAllergies } from '../../Providers/StudentAllergies';
+import MyLayout from '../../components/Layout';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Item } = Menu;
 
 const StudentDetails: React.FC = () => {
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
+  const [studentsAllergies, setStudentsAllergies] = useState<any>(null);
   const [student,setStudent] = useState<IPerson>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [addStudentAllergiesVisible, setAddStudentAllergiesVisible] = useState<boolean>(false);
   const router = useRouter();
-  const{FetchStatePerson,getStudents,getStudentById,PersonFetched} = usePersons<any>();
-  const{getIngredients,IngredientState} = useIngredient()
+  const{FetchStatePerson,getStudents,PersonFetched} = usePersons<any>();
+  const{getIngredients,IngredientState} = useIngredient();
+  const{getStudentAllergies,StudentAllergiesState,updateStudentAllergies,StudentAllergiesCreated}=useStudentAllergies();
   const {id} = router.query;
   const [createModalVisible, setCreateModalVisible] = useState(false);
   useEffect(() => {
-    // fetchStudents();
     getStudents();
-    getStudentById(id?.toString());
+    getStudentAllergies();
     getIngredients();
     if (PersonFetched) {
       setStudent(PersonFetched);
     }
   }, []);
-  console.log('person with id ',PersonFetched)
 
- // ...
- const filteredStudent = FetchStatePerson?.find(a=>a.id.toString()==id.toString());
- useEffect(() => {
-  const filteredStudent = FetchStatePerson?.find(a=>a.id=='5e69dfdb-abe5-43f9-2676-08db726ffd1a');
+ const filteredStudent = FetchStatePerson?.find(a=>a.id.toString()==id?.toString());
+ const filteredStudentAllergies = StudentAllergiesState?.filter(
+  (allergy) => allergy.StudentId?.toString() === filteredStudent?.id.toString()
+);
+console.log('filteredStudentAllergies',filteredStudentAllergies);
+console.log('StudentAllergiesState get all',StudentAllergiesState)
+useEffect(() => {
   if (student && id) {
-    const filteredStudent = selectedStudent?.IndexOf(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19');
     setSelectedStudent(filteredStudent);
-    console.log('filteres effed',filteredStudent);
+    console.log('filtered allergies', filteredStudentAllergies);
   }
-  console.log('filteres effed',filteredStudent);
-}, [student, id]);
-console.log('fil',filteredStudent);
+  if(StudentAllergiesState)
+  { 
+    ste();
+    console.log('yes',studentsAllergies);
+  }
+}, [student, id, filteredStudent,StudentAllergiesState,StudentAllergiesCreated]);
+const ste = async()=>
+{
+  setStudentsAllergies( StudentAllergiesState?.filter(
+    (allergy) => allergy.studentId?.toString() === id.toString()));
+}
+useEffect(()=>
+{
+  if(StudentAllergiesState)
+  {
+    var allergies = StudentAllergiesState.filter((allergy) => allergy.studentId?.toString() === id?.toString());
+    console.log('allergies',allergies)
+    setStudentsAllergies(allergies);
+    console.log('AAAAAAA',allergies);
+  }
+},[])
 
-// ...
+const columns = [
+  { title: 'Name', dataIndex: 'name', key: 'name' },
+  { title: 'Surname', dataIndex: 'surname', key: 'surname' },
+  { title: 'Grade', dataIndex: 'grade', key: 'grade' },
+  {
+    title: 'Actions',
+    key: 'actions',
+    render: (text: any, record: any) => (
+      <Button type="link">
+        View Details
+      </Button>
+    ),
+  },
+];
 
 console.log('ingred',IngredientState)
 console.log('fetvh',PersonFetched);
-
   const handleCloseModal = () => {
     setModalVisible(false);
   };
@@ -65,7 +97,6 @@ console.log('fetvh',PersonFetched);
   };
 
   const handleAddStudentAllergies = (values: any) => {
-    // Add logic to add student allergies based on the entered values
     console.log('Add Student Allergies:', values);
     setAddStudentAllergiesVisible(false);
   };
@@ -74,54 +105,59 @@ console.log('fetvh',PersonFetched);
     console.log('Form Values:', values);
     setCreateModalVisible(false);
   };
-
-
-  //filter students
-  // var student = FetchStatePerson?.find(a => id.toString() === a.userId.toString());
+  
+  const handleToggleIsCurrent = (allergy: any) => {
+    console.log('......',allergy.ingredientId,allergy.studentId);
+    updateStudentAllergies(allergy.studentId,allergy.ingredientId);
+  };
 console.log('foun',FetchStatePerson);
 
-  const columns = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Surname', dataIndex: 'surname', key: 'surname' },
-    { title: 'Grade', dataIndex: 'grade', key: 'grade' },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (text: any, record: any) => (
-        <Button type="link">
-          View Details
-        </Button>
-      ),
-    },
-  ];
+const columns2 = [
+  {
+    title: 'Ingredient Name',dataIndex: ['ingredients', 'name'],key: 'ingredientName',
+  },
+  { title: 'reaction', dataIndex: 'reaction', key: 'reaction' },
+  {
+    title: 'isCurrent',
+    dataIndex: 'isCurrent',
+    key: 'isCurrent',
+    render: (isCurrent: boolean, record: any) => (
+      <Button type="primary" onClick={() => handleToggleIsCurrent(record)}>
+        {isCurrent ? 'On' : 'Off'}
+      </Button>
+    ),
+  },
+  { title: 'treatment', dataIndex: 'treatment', key: 'treatment' },
+  {
+    title: 'Actions',
+    key: 'actions',
+    render: (text: any, record: any) => (
+      <Button type="link">
+        View Details
+      </Button>
+    ),
+  },
+];
 
   return (
-    <Layout className={styles.layout}>
-      <Sider width={200} theme="dark">
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['students']}>
-          <Item key="students">Students</Item>
-          <CreateStudentAllergyModal
+
+    <MyLayout>
+      <Layout>
+        <Header className={styles.header}>
+        <CreateStudentAllergyModal
             visible={createModalVisible}
             onCancel={() => setCreateModalVisible(false)}
              onSubmit={handleCreateModalSubmit}
+             studentId={id}
           />
-             <Button type="primary" onClick={() => setCreateModalVisible(true)}>
-                Open Create Modal
-            </Button>
-        </Menu>
-      </Sider>
-      <Layout>
-        <Header className={styles.header}>
           <div className={styles.logo} />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['students']}>
-            <Item key="students">Students</Item>
-            <Item key="addAllegries" onClick={handleAddStudentAllergiesClick}>
-              Add Student Allergies
-            </Item>
-          </Menu>
+          <Button type="primary" onClick={() => setCreateModalVisible(true)}>
+                Add Student Allergies
+            </Button>
         </Header>
         <Content className={styles.content}>
         <Table columns={columns} dataSource={[filteredStudent]} rowKey="id" />
+        <Table dataSource={studentsAllergies} columns={columns2} size='small' style ={{width:'2000'}}/>
           {/* Student Details Modal */}
           {selectedStudent && (
             <Modal
@@ -189,13 +225,12 @@ console.log('foun',FetchStatePerson);
               </Form.Item>
             </Form>
           </Modal>
-        {/* <p>  {selectedStudent?.map(a => a.id.toString()=='4b83b783-a330-459e-4149-08db6b353b19')}</p> */}
         </Content>
         <Footer className={styles.footer}>Ant Design ©2023 Created by Ant UED</Footer>
         
       </Layout>
-    </Layout>
+    </MyLayout>
   );
 };
 
-export default StudentDetails;
+export default withAuth(StudentDetails);

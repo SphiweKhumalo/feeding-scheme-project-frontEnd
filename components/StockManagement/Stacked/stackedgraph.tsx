@@ -5,7 +5,7 @@ import { useGet } from "restful-react";
 const StackedGraph = () => {
   const [batchInformation, setBatchInformation] = useState([]);
   const { loading, error, data: batchData } = useGet({
-    path: 'BatchInformationService/GetBatchInformationByIngredient',
+    path: 'BatchInformationService/GetBatchInformationByEachIngredientName',
   });
 
 
@@ -16,12 +16,15 @@ const StackedGraph = () => {
   }, [batchData]);
 
   const createDatasets = () => {
-    const datasets = batchInformation.map((category) => {
-      const labels = category.batchInformation.map((batch) => batch.id);
-      const quantities = category.batchInformation.map((batch) => batch.quantity);
+    const datasets = batchInformation.map((name) => {
+      const labels = name.batchInformation.map((batch) => batch.id);
+      const quantities = name.batchInformation.map((batch) => batch.quantity);
+      const expiryDates = name.batchInformation.map((batch) => batch.expiryDate); // Access expiryDate array
+      const formattedExpiryDates = expiryDates.join(', '); // Convert expiryDates array to a comma-separated string
       const backgroundColor = getRandomColor();
+  
       return {
-        label: category.name,
+        label: `${name.name} (${formattedExpiryDates.slice(0,expiryDates.indexOf('T'))})`, // Use formattedExpiryDates in the label
         data: quantities,
         backgroundColor: backgroundColor,
         borderColor: backgroundColor,
@@ -31,7 +34,7 @@ const StackedGraph = () => {
     });
     return datasets;
   };
-
+  
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';

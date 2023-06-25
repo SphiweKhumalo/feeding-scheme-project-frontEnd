@@ -2,7 +2,7 @@
 .MenuContainer {
     width: 200px;
     margin: 3rem;
-    border: 2px solid green;
+    /* border: 2px solid green; */
   }
   
   .ContentContainer {
@@ -18,7 +18,7 @@
   
   .divRight {
     padding: 2rem;
-    border: 2px solid rgb(0, 38, 255);
+    /* border: 2px solid rgb(0, 38, 255); */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
@@ -54,5 +54,30 @@
   .batchCard-totalQuantity {
     font-weight: bold;
     color: blue;
+  }
+
+  .dashboardTable {
+    background-color: #f7f7f7;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    padding: 16px;
+  }
+  
+  .dashboardTable th {
+    background-color: #f2f2f2;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .dashboardTable td {
+    background-color: #ed3333;
+  }
+  
+  .dashboardTable .rowClass:nth-child(even) td {
+    background-color: #ded018;
+  }
+  
+  .dashboardTable .rowClass:hover td {
+    background-color: #ca8d0bc8;
   }
   

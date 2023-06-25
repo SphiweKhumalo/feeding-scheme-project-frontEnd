@@ -12,7 +12,14 @@ export function BatchInformationReducer(incomingState: IBatchInformationStateCon
             case BatchInformationActionEnum.createBatchInformationRequest: 
             // return {...incomingState,MenuState:[payload.MenuCreated,...incomingState?.MenuState]}
             return { ...incomingState, BatchInformationState:[payload.BatchInformationCreated,...incomingState?.BatchInformationState]};
-
+            case BatchInformationActionEnum.deleteBatchInformationRequest:
+             const { BatchInformationDeleted } = payload;
+             const filteredBatchInfo = [...incomingState?.BatchInformationState].filter(({ id }) => id !== BatchInformationDeleted);
+             return { ...incomingState, BatchInformationState: [...filteredBatchInfo] };
+             case BatchInformationActionEnum.updateBatchInformationRequest:
+          const {BatchInformationUpdated}=payload;
+          const filteredBatch=[...incomingState?.BatchInformationState].filter(({id})=>id!=BatchInformationUpdated?.id)
+          return { ...incomingState, BatchInformationState:[...filteredBatch, BatchInformationUpdated]};
         default:
             return incomingState;
     }

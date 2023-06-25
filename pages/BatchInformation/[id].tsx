@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, message } from 'antd';
+import { Table, message, Popconfirm, Modal, Input } from 'antd';
 import { useGet } from 'restful-react';
 import styles from './styles.module.css';
+import withAuth from '../login/hoc/withAuth';
+import { useBatchInformation } from '../../Providers/BatchInformation';
+import MyLayout from '../../components/Layout';
+import { IBatchInformation } from '../../Providers/BatchInformation/context';
+import axios from 'axios';
 
 interface BatchCardProps {}
 
@@ -20,19 +25,74 @@ interface BatchInformation {
   supplierId: string;
 }
 
-const DepletingBatch: React.FC<BatchCardProps> = () => {
+const BatchInformation: React.FC<BatchCardProps> = () => {
   const [dataSource, setDataSource] = useState<BatchItem[]>([]);
-  const { data: apiData, loading, error } = useGet({
-    path: 'BatchInformationService/GetBatchInformationByIngredient'
-  });
+  const [batchData, setbatchData] = useState<any[]>([]);
+  const [editingBatchId, setEditingBatchId] = useState<string>('');
+  const [editingQuantity, setEditingQuantity] = useState<number>(0);
+  const {
+    BatchInformationState,
+    getBatchInformation,
+    deleteBatchInformation,
+    updateBatchInformation
+  } = useBatchInformation();
 
   useEffect(() => {
-    if (error) {
-      message.error('Failed to fetch data from the API.');
-    } else if (apiData) {
-      setDataSource(apiData.result);
+    getBatchInformation();
+    console.log('getBatchInformation');
+  }, []);
+
+  useEffect(() => {
+    if (BatchInformationState) {
+      setbatchData(BatchInformationState);
     }
-  }, [apiData, error]);
+  }, [BatchInformationState]);
+
+  console.log('batchinforstate', BatchInformationState);
+
+  const handleDelete = (batchId: string) => {
+    console.log('batchId', batchId);
+    deleteBatchInformation(batchId);
+  };
+
+  const handleEdit = (updatedBatch: IBatchInformation) => {
+    console.log(updatedBatch, ':baTCH UPSDATED');
+    setEditingBatchId(updatedBatch.id);
+    setEditingQuantity(updatedBatch.quantity);
+  };
+
+  const handleSave = async () => {
+   // try {
+      const updatedBatch :IBatchInformation = {
+        id: editingBatchId,
+        quantity: editingQuantity
+      };
+        updateBatchInformation(updatedBatch);
+    //   const url = 'https://localhost:44311/api/services/app/BatchInformationService/UpdateBatchInformation';
+  
+    //   const response = await axios.put(url, updatedBatch);
+  
+    //   console.log('res result', response);
+  
+    //   if (response.status === 200) {
+    //     message.success('Batch information updated successfully');
+    //     closeModal();
+    //   } else {
+    //     // Handle the error case
+    //     message.error('Error updating batch information');
+    //     console.error('Error updating batch information:', response);
+    //   }
+    // } catch (error) {
+    //   message.error('Error updating batch information');
+    //   console.error('Error updating batch information:', error);
+    //}
+  };
+  
+
+  const closeModal = () => {
+    setEditingBatchId('');
+    setEditingQuantity(0);
+  };
 
   const columns = [
     {
@@ -40,20 +100,13 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
       dataIndex: 'name',
       key: 'name'
     },
-    // {
-    //   title: 'Ingredient ID',
-    //   dataIndex: 'ingredientId',
-    //   key: 'ingredientId'
-    // },
     {
-      title: 'batch Id',
+      title: 'Batch ID',
       dataIndex: 'batchInformation',
-      key: 'prodDate',
-      render: (batchInformation) => {
+      key: 'batchId',
+      render: (batchInformation, record) => {
         if (batchInformation.length > 0) {
-          return batchInformation.map((batch) => (
-            <p key={batch.id}>{batch.id}</p>
-          ));
+          return batchInformation.map((batch) => <p key={batch.id}>{batch.id}</p>);
         }
         return null;
       }
@@ -64,9 +117,7 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
       key: 'prodDate',
       render: (batchInformation) => {
         if (batchInformation.length > 0) {
-          return batchInformation.map((batch) => (
-            <p key={batch.id}>{batch.prodDate}</p>   //trim the date.
-          ));
+          return batchInformation.map((batch) => <p key={batch.id}>{batch.prodDate}</p>);
         }
         return null;
       }
@@ -77,22 +128,40 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
       key: 'expiryDate',
       render: (batchInformation) => {
         if (batchInformation.length > 0) {
-          return batchInformation.map((batch) => (
-            <p key={batch.id}>{batch.expiryDate}</p>
-          ));
+          return batchInformation.map((batch) => <p key={batch.id}>{batch.expiryDate}</p>);
         }
         return null;
       }
     },
     {
-      title: 'Quantities',
+      title: 'Quantity',
       dataIndex: 'batchInformation',
       key: 'quantity',
-      render: (batchInformation) => {
+      render: (batchInformation, record) => {
         if (batchInformation.length > 0) {
           return batchInformation.map((batch) => (
             <p key={batch.id} className="depletingP">
               {batch.quantity}
+              <button onClick={() => handleEdit(batch)}>Edit</button>
+              <Popconfirm
+                title="Are you sure to delete this batch?"
+                onConfirm={() => handleDelete(batch.id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button>Delete</button>
+              </Popconfirm>
+
+              {editingBatchId === batch.id && (
+                 <div>
+                 <Input
+                   type="number"
+                   value={editingQuantity}
+                   onChange={(e) => setEditingQuantity(Number(e.target.value))}
+                 />
+                 <button onClick={() => handleSave(batch.id)}>Save</button> {/* Pass batch as an argument */}
+               </div>
+              )}
             </p>
           ));
         }
@@ -109,53 +178,37 @@ const DepletingBatch: React.FC<BatchCardProps> = () => {
         );
         return <p className="batchCard-totalQuantity">{totalQuantity}</p>;
       }
-    },
+    }
   ];
 
   return (
-    // <div className="batchCard-container">
-    //   <Table
-    //     className="batchCard-table"
-    //     dataSource={dataSource}
-    //     columns={columns}
-    //     loading={loading}
-    //     pagination={false}
-    //     size='large'
-    //     rowClassName={styles.rowClass}
-    //     style={{ width: '2000px', height: '10' }} // Adjust the values as per your requirement
-    //   />
-    // </div>
-    <>
-        <div className={styles.MenuContainer}>
-  {/* Content */}
-</div>
+    <MyLayout>
+      <div className="batchCard-container">
+        <Table
+          className="batchCard-table"
+          dataSource={BatchInformationState}
+          columns={columns}
+          pagination={false}
+          size="large"
+          rowClassName={styles.rowClass}
+          style={{ width: '2000px', height: '10' }}
+        />
 
-<div className={styles.ContentContainer}>
-  <div className={styles.divLeft}>
-    {/* Left Content */}
-  </div>
-  <div className={styles.divRight}>
-    {/* Right Content */}
-  </div>
-</div>
-
-<h1 className={styles.h1}>Stock(batch)</h1>
-
-<div className={styles.batchCardContainer}>
-  <Table
-    className={styles.batchCardtable}
-    dataSource={dataSource}
-    columns={columns}
-    loading={loading}
-    pagination={false}
-    size="large"
-    rowClassName={styles.rowClass}
-    scroll={{ x: 800, y: 400 }}
-  />
-</div>
-
-    </>
+        <Modal
+          title="Edit Stock Count"
+          visible={!!editingBatchId}
+          onOk={handleSave}
+          onCancel={closeModal}
+        >
+          <Input
+            type="number"
+            value={editingQuantity}
+            onChange={(e) => setEditingQuantity(Number(e.target.value))}
+          />
+        </Modal>
+      </div>
+    </MyLayout>
   );
 };
 
-export default DepletingBatch;
+export default withAuth(BatchInformation);

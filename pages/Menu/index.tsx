@@ -23,6 +23,9 @@ import Link from 'next/link';
 import MenuDrawer from '../../components/menuDrawer/MenuDrawer';
 import getDayOfWeek from '../../utils/getDayOfWeek';
 import getMealTime from '../../utils/getMealTime';
+import withAuth from '../login/hoc/withAuth';
+import { useBatchInformation } from '../../Providers/BatchInformation';
+import MyLayout from '../../components/Layout';
 // import{getDayOfWeek} from '../../utils/getDayOfWeek';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -44,14 +47,6 @@ function getItem(
   } as MenuItem;
 }
 
-interface menu {
-  id: string;
-  name: string;
-  imageUrl: string;
-  servingTime: string;
-  type: number;
-}
-
 type MenuOptions = {
   key: string;
   title: string;
@@ -59,58 +54,62 @@ type MenuOptions = {
   path: string;
 };
 
-const App: React.FC = () => {
-  const { menusAction, MenuState,createMenu} = useMenu();
-  const [collapsed, setCollapsed] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+const MenuInfomration: React.FC = () => {
+  const { menusAction, MenuState,createMenu,deleteMenu} = useMenu();
+  const[mainMenus,setMainMenus]= useState<IMenu[]>();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [formValues, setFormValues] = useState({});
   const router = useRouter();
  
   useEffect(() => {
     menusAction();
     console.log('menu stste',MenuState)
+    if(MenuState){setMainMenus(MenuState.filter(a=>a.type==0))}
   }, []);
-  console.log('menu stste',MenuState);
+  useEffect(() => {
+    if(MenuState){setMainMenus(MenuState.filter(a=>a.type==0))}
+  },[MenuState])
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const handleMenuClick = (menuId) => {
+  const handleMenuClick = (menuId) : void=> {
     router.push(`/MenuIngredient/${menuId}`);
   };
 
-  const handleDayMenuClick = (path:string) => {
+  const handleDayMenuClick = (path:string) :void=> {
     router.push(path);
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = () :void => {
     setModalVisible(true);
   };
 
-  const handleModalCancel = () => {
+  const handleModalCancel = () :void => {
     setModalVisible(false);
   };
-  const handleDeleteClick = (payload) =>
+  const handleDeleteClick = (payload) :void=>
   {
-
+    deleteMenu(payload);
+    // location.reload();
+    
   }
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values): void => {
     console.log(values);
     setModalVisible(false);
     console.log('Received values of form: ', values);
     if (createMenu) {
       createMenu(values);
-        // Redirect to moviesTable after successful registration
-        // router.push('/moviesTable');
     } else {
       console.log('menu not created');
     }
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      {/* <Layout className={styles.centerLayout}> */}
+    <MyLayout>
+         <Layout style={{ minHeight: '100vh' }}>
         <Content style={{ margin: '0 16px' }}>
           <div className={styles.cardDiv}>
             <>
@@ -121,13 +120,12 @@ const App: React.FC = () => {
                   <MenuDrawer />
                   </span>
                 
-                {MenuState?.map((a, index) =>
+                {mainMenus?.map((a, index) =>
                   <Card
                     hoverable
                     className={styles.MenuContainer}
-                    cover={<img alt="example" src={a?.imageUrl} />}
+                    cover={<img onClick={() => handleMenuClick(a.id)} alt="example" src={a?.imageUrl} />}
                     key={index}
-                    onClick={() => handleMenuClick(a.id)}
                   >
                      <section className={styles.CardSectionStyling}>
                         <Meta description={<span style={{ color: 'rgb(224, 112, 46)' }}>Day: {getDayOfWeek(a.day)}</span>} />
@@ -144,7 +142,6 @@ const App: React.FC = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-      {/* </Layout> */}
       <Modal
         visible={modalVisible}
         onCancel={handleModalCancel}
@@ -174,7 +171,9 @@ const App: React.FC = () => {
         
       </Modal>
     </Layout>
+    </MyLayout>
+   
   );
 };
 
-export default App;
+export default withAuth(MenuInfomration);

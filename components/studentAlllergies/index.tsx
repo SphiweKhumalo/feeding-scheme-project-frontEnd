@@ -1,16 +1,31 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Button, DatePicker, Switch, Select } from 'antd';
 import { useIngredient } from '../../Providers/Ingredients';
+import { useGet, useMutate } from 'restful-react';
+import { useStudentAllergies } from '../../Providers/StudentAllergies';
 
 
-const CreateStudentAllergyModal = ({ visible, onCancel, onSubmit }) => {
+const CreateStudentAllergyModal = ({ studentId, visible, onCancel, onSubmit }) => {
+  const{createStudentAllergies,StudentAllergiesCreated}  =useStudentAllergies();
+  const { mutate: createStudentAllergiesHttp} = useMutate({
+    path: 'StudentAllergiesService/Create',
+    verb: 'POST',
+  });
+
+
   const [form] = Form.useForm();
 const{IngredientState,getIngredients}=useIngredient();
-  const handleSubmit = (values) => {
-    // Handle form submission here
+
+
+  const  handleSubmit = async (values) => {
+    values.studentId = studentId;
     onSubmit(values);
-    form.resetFields();
+    var res = await createStudentAllergies(values);
+    console.log('response',res);
+    
+    // form.resetFields();
   };
+  
   useEffect(()=>
   {
     getIngredients();
@@ -32,9 +47,8 @@ console.log('ingre',IngredientState);
         <Form.Item
           name="studentId"
           label="Student ID"
-          rules={[{ required: true, message: 'Please enter the student ID' }]}
+          // rules={[{ required: true, message: 'Please enter the student ID' }]}
         >
-          <Input />
         </Form.Item>
         <Form.Item
           name="ingredientId"

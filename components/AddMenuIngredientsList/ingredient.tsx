@@ -8,52 +8,45 @@ import { useIngredient } from '../../Providers/Ingredients';
 
 const { Option } = Select;
 
-const MenuDropdown = ({ recvievedMenuId }) => {
+const MenuDropdown = ({ receivedMenuId }) => {
   const [ingredientItems, setIngredientItems] = useState([]);
   const{IngredientState,getIngredients}=useIngredient();
   const [quantityPerServing, setQuantityPerServing] = useState<number>(3); 
   const{menuIngredientAction,MenuIngredientState,createMenuIngredient}=useMenuIngredient();
-  const [selectedValue, setSelectedValue] = useState(null); // Add selectedValue state
-  const { mutate: createMenuIngredientHttp } = useMutate({
-    path: 'MenuIngredientService/CreateMenuIngredient',
-    verb: 'POST',
-  });
-
+  const [selectedValue, setSelectedValue] = useState(null); 
   const addMenuIngredient = async (payload) => {
-    var ingredientMenu :IMenuIngredient= {
+    const ingredientMenu: IMenuIngredient = {
       ingredientId: payload,
-      menuId: recvievedMenuId,
+      menuId: receivedMenuId,
       quantityPerServing: quantityPerServing,
     };
+  
     try {
       console.log("Creating Menu Ingredient:", ingredientMenu);
-      // const response = await createMenuIngredientHttp(ingredientMenu);
-      createMenuIngredient(ingredientMenu);
-      console.log("Response:", response);
-      if (response.success) {
-        message.success('Ingredient added successfully');
-        // Do something after successfully adding the ingredient
-      } else {
-        message.error('Failed to add ingredient');
-      }
+      await createMenuIngredient(ingredientMenu); // Await the async function
+      // location.reload();
     } catch (error) {
-      console.error('Ingredient addition error:', error);
-      message.error('Ingredient is already added to menu');
+      console.error("Ingredient addition error:", error,1);
+      message.error("Ingredient is already added to the menu",1);
     }
   };
 
+  useEffect(()=>
+  {
+    getIngredients();
+  },[])
+
   useEffect(() => {
-    getIngredients()
     if (IngredientState) {
       setIngredientItems(IngredientState);
     }
-  }, []);
+  },[IngredientState]);
 
   const handleSubmit = () => {
     if (selectedValue) { // Check if a value is selected
       addMenuIngredient(selectedValue);
     } else {
-      message.error('Please select an ingredient');
+      message.error('Please select an ingredient',1);
     }
   };
 

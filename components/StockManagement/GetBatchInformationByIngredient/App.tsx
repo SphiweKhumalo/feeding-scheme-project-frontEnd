@@ -13,7 +13,7 @@ const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Bar Chart',
+      text: 'Stock Levels By Food Category',
     },
   },
 };
@@ -27,14 +27,20 @@ export function BatchInformationByIngredient() {
     fetchData(); // Fetch data from the API when the component mounts
   }, []);
 
+  const colorPalette = [
+    'rgba(255, 99, 132, 0.5)',
+    'rgba(54, 162, 235, 0.5)',
+    'rgba(255, 206, 86, 0.5)',
+    // Add more colors as needed
+  ];
+
   const chartData = {
     labels: apiData?.result.map(item => item.name) || [],
-    datasets: apiData?.result.map(item => ({
-      label: item.name,
+    datasets: apiData?.result.map((item, index) => ({
       data: item.batchInformation.map(batch => batch.quantity),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      backgroundColor: colorPalette[index % colorPalette.length], // Assign a color from the colorPalette based on index
     })) || [],
   };
 
-  return <Bar options={options} data={chartData} />;
+  return <Bar  options={options} data={chartData} />;
 }

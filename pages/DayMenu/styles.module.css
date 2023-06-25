@@ -15,14 +15,15 @@
      flex-direction: row; */
 }
 .divLeft {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     width: 100%;
     padding:6rem;
+    
   }
   
 .divRight {
     padding: 2rem;
-    border: 2px solid rgb(0, 38, 255);
+    /* border: 2px solid rgb(0, 38, 255); */
     width: 100%;
     background-color: rgb(3, 18, 31);
     color: white;
@@ -88,6 +89,13 @@
     justify-content: center;
     align-items: center;
     height: 100%; 
+}
+.ParagraphStyling
+{
+    border-radius: 15px;
+    background-color:rgb(204, 87, 19);
+    color:whitesmoke;
+    font-size: 1rem;
 }
 
 

@@ -8,7 +8,9 @@ import {
   UserOutlined,
   MessageOutlined,
   SettingOutlined,
-  HomeOutlined
+  HomeOutlined,
+  LogoutOutlined
+  
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,33 +25,8 @@ type MenuItem = {
   path: string;
 };
 
-const items: MenuItem[] = [
-  {
-    key: "Menu",
-    title: "Menu",
-    icon: <HomeOutlined />,
-    path: "/Menu",
-  },
-    {
-    key: "DayMenu",
-    title: "Day Menu",
-    icon: <MessageOutlined />,
-    path: "/DayMenu",
-  },
 
-  {
-    key: "StockManagement",
-    title: "StockManagement",
-    icon: <MessageOutlined />,
-    path: "/StockManagement",
-  },
-  {
-    key: "Students",
-    title: "Students",
-    icon: <SettingOutlined />,
-    path: "/StudentManagement",
-  },
-];
+
 
 const MyLayout: React.FC = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -58,6 +35,36 @@ const MyLayout: React.FC = ({ children }) => {
   const handleDayMenuClick = (path: string) => {
     router.push(path);
   };
+  const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.href = 'http://localhost:3000';
+  };
+  const items: MenuItem[] = [
+    {
+      key: "Menu",
+      title: "Menu",
+      icon: <HomeOutlined rev={undefined} />,
+      path: "/Menu",
+    },
+    {
+      key: "DayMenu",
+      title: "Day Menu",
+      icon: <MessageOutlined rev={undefined} />,
+      path: "/DayMenu",
+    },
+    {
+      key: "StockManagement",
+      title: "Stock Management",
+      icon: <MessageOutlined rev={undefined} />,
+      path: "/StockManagement",
+    },
+    {
+      key: "Students",
+      title: "Students",
+      icon: <SettingOutlined rev={undefined} />,
+      path: "/StudentManagement",
+    },
+  ];
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -75,17 +82,7 @@ const MyLayout: React.FC = ({ children }) => {
           ))}
         </Menu>
       </Sider>
-      <Layout>
-        {/* <Header style={{ padding: 0, background: 'gray' }} /> */}
-        {/* <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div style={{ padding: 24, minHeight: 360, background: 'gray' }}>
-            {children}
-          </div>
-        </Content> */}
+      <Layout style ={{height:'100%',backgroundColor:'rgb(38, 48, 68)'}}>
         {children}
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>

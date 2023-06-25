@@ -4,23 +4,28 @@ import { createContext } from 'react';
 
 
 export interface IBatchInformation {
-    ingredientId: string;
-    prodDate: Date;
-    expiryDate: Date;
-    quantity: number;
-    supplierId: string;
+    id?:string;
+    ingredientId?: string;
+    prodDate?: Date;
+    expiryDate?: Date;
+    quantity?: number;
+    supplierId?: string;
   }
   
 
 export interface IBatchInformationStateContext {
     readonly BatchInformationState? : IBatchInformation[];
     readonly BatchInformationCreated?: IBatchInformation;
+    readonly BatchInformationUpdated?: IBatchInformation;
+    readonly BatchInformationDeleted?:string;
 }
 export const INITIAL_STATE : IBatchInformationStateContext = {BatchInformationState:[]};
 
 export interface IBatchActionContext {
-    getBatchInformationAction?: () => void;
-    addBatch? : (payload:IBatchInformation) =>void;
+    getBatchInformation?: () => void;
+    updateBatchInformation?:(batchInformation:IBatchInformation) =>void;
+    createBatchInformation?:(payload:IBatchInformation) =>void;
+    deleteBatchInformation?:(payload:string) =>void;
 }
 
 const BatchInformationContext = createContext<IBatchInformationStateContext>(INITIAL_STATE);

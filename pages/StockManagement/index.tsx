@@ -3,28 +3,21 @@ import { Breadcrumb, Card, Layout, Menu, theme,Image, Button, message } from 'an
 import { useRouter } from 'next/router';
 import { useGet } from 'restful-react';
 import styles from './styles.module.css';
-// import Meta from 'antd/es/card/Meta';
-import { useMenu } from '../../Providers/Menu';
-import MenuDropdown from '../../components/IngredientsList/ingredient';
-import {DeleteOutlined} from '@ant-design/icons';
-import { IMenuIngredient, MenuIngredientActionContext } from '../../Providers/MenuIngredients/context';
-import { useMenuIngredient } from '../../Providers/MenuIngredients';
 import DepletingBatch from '../../components/StockManagement/DepletingBatchesByStock/DepletingBatchesByStock';
-import MyChartComponent from '../../components/StockManagement/batchTable';
-import BarChart from '../../components/StockManagement/batchTable';
-import BatchInformation from '../../components/StockManagement/batchTable';
 import Piechart from '../../components/StockManagement/pieChart';
 import AddBatchPopup from '../../components/StockManagement/Add Batch/AddBatch';
-import { App, BatchInformationByIngredient } from '../../components/StockManagement/GetBatchInformationByIngredient/App';
-import { DepletingStockPieChart } from '../../components/StockManagement/DepletingStockPieChart/depletingStockPieChart';
-import BarStacked from '../../components/StockManagement/BatchInformationStackedBarGraph/BarStacked';
+import {  BatchInformationByIngredient } from '../../components/StockManagement/GetBatchInformationByIngredient/App';
 import { StockExpiringSoon } from '../../components/StockManagement/BarGraphStockExpiringSoon/App';
 import StackedGraph from '../../components/StockManagement/Stacked/stackedgraph';
 import Meta from 'antd/es/card/Meta';
-// import { useBatchInformation } from '../../Providers/BatchInformation';
+import { AddIngredientForm } from '../../components/AddIngredientDropDown/AddIngredient';
+import withAuth from '../login/hoc/withAuth';
+import { useIngredient } from '../../Providers/Ingredients';
+import MyLayout from '../../components/Layout';
 
 const { Header, Content, Footer } = Layout;
 const { Item} = Menu;
+
 
 interface Ingredient 
 {
@@ -34,23 +27,19 @@ interface Ingredient
 
 }
 const StockManagement: React.FC = () => {
-  // const{BatchInformationState,getBatchInformationAction} = useBatchInformation();
   const [popupVisible, setPopupVisible] = useState(false);
+  const [ingredientForm, setIngredientForm] = useState<Boolean>(false);
+  // const{createIngredient,IngredientCreatedm,getIngredients} = useIngredient();
   const router = useRouter();
   const { id } = router.query;
-      
+  const{Meta} = Card;
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-useEffect(() =>
-{
-  // getBatchInformationAction()
-  // console.log('batch state',BatchInformationState);
-},[])
+
   //function calls
   const handleDeleteClick = (id) => {
-    // Handle the click event for the delete icon
-    console.log('id is',id)
     message.success('dummy Delete Clickedwith id: '+ id);
   };
 
@@ -59,66 +48,51 @@ useEffect(() =>
   };
 
   const handleClosePopup = () => {
-    setPopupVisible(false);
+    setPopupVisible(false);``
   };
 
   const handleFormSubmit = (data: FormData) => {
-    // Handle API submission logic here
     console.log(data);
   };
-
+  const handleToggleIngredientForm =async =>
+  {
+    setIngredientForm(!ingredientForm);
+  }
   return (
-    <Layout className="layout">
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
-        <Menu
-      theme="dark"
-      mode="horizontal"
-      defaultSelectedKeys={['1']}
-    >
-      <Item key="1">nav 1</Item>
-    </Menu>
-    <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
-
-      </Header>
-      {/* {MenuIngredientState && .map(a=><h1>{a.ingredientId}</h1>)} */}
-      <Content className={styles.ContentContainer}>
-       
+    <MyLayout>
+      <Content className={styles.ContentContainer}>      
         <div className={styles.divLeft}>
-        <h1>Depleting Batches(under:300)</h1>
-        <button onClick={handleOpenPopup}>Open Popup</button>
-        <Card>
-          <Meta title="Depleting Batch" />
-          <section className={styles.BarSection}>
-            <DepletingBatch />
-          </section>
-        </Card>
+        <h1>Low Batches(under:300)</h1>
+        <Button  type='primary'onClick={handleOpenPopup}>Open Popup</Button>
+        <Button  type='primary'onClick={handleToggleIngredientForm}>Add Ingredient</Button>
 
-        <Card>
-        <section className={styles.BarSection}>
-          <h1>Stock Expiring Soon</h1>
-          <StockExpiringSoon />
-        </section>
-        <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} /> 
-        </Card>
-      
-        </div>
+        <AddIngredientForm visible={ingredientForm} onCancel={handleToggleIngredientForm} onSubmit ={null} /> 
         <div className={styles.divRight}>
         <Card>
           <Meta title="Fresh Stock Levels" />
           <Piechart />
         </Card>
       </div>
+        <Card style={{backgroundColor:'transparent'}}>
+          <Meta title="Depleting Batch" />
+          <section className={styles.BarSection}> 
+            <DepletingBatch />
+          </section>
+        </Card>
+        <Card style={{backgroundColor:'transparent'}}>
+        <section className={styles.BarSection}>
+          <h1 style = {{color:'',fontStyle:'italic'}}>Stock Expiring In (5) Days</h1>
+          <StockExpiringSoon />
+        </section>
+        <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} /> 
+        </Card>
+        </div>
         <BatchInformationByIngredient />
         <StackedGraph />
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-    </Layout>
+    </MyLayout>
   );
 };
 
-export default StockManagement;
+export default withAuth(StockManagement);

@@ -1,7 +1,8 @@
+import { Card, message } from "antd";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { useGet } from "restful-react";
-
+const { Meta } = Card;
 const  DepletingBatch: React.FC= () => {
   const [dataSource, setDataSource] = useState<[]>([]);
   const { data: apiData, loading, error } = useGet({
@@ -27,13 +28,13 @@ const  DepletingBatch: React.FC= () => {
             0
           )
         ),
-        backgroundColor: 'rgb(224, 112, 46)'
+        backgroundColor: 'red'
       }
     ]
   };
 
   return (
-    <div style={{backgroundColor: 'transparent',width: '400px', height: '300px' }}>
+    <div style={{color:'blue',backgroundColor: 'transparent',width: '80%', height: '400px' }}>
       <Bar data={chartData} />
     </div>
   );

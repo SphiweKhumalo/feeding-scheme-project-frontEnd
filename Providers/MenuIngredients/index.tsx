@@ -52,7 +52,7 @@ const MenuIngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     try {
       const response = await createMenuHttp(payload);
       if (response.success) {
-        dispatch(createMenuIngredientRequestAction(response));
+        dispatch(createMenuIngredientRequestAction(response.result));
         message.success("Ingredient added to Menu successfully");
 
       } else {

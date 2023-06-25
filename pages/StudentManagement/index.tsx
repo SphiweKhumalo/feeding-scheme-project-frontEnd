@@ -7,8 +7,9 @@ import { useGet } from 'restful-react';
 import { usePersons } from '../../Providers/personRegistration';
 import { IPerson } from '../../Providers/personRegistration/AuthContext';
 import Sider from 'antd/es/layout/Sider';
-// import StudentDetails from '../StudentDetails/index[id]';
-
+import withAuth from '../login/hoc/withAuth';
+import { useStudentAllergies } from '../../Providers/StudentAllergies';
+import MyLayout from '../../components/Layout';
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
@@ -25,35 +26,43 @@ const Students: React.FC = () => {
   const [addStudentVisible, setAddStudentVisible] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [filteredData, setFilteredData] = useState<any[]>([]);
-
+ const{ getStudentAllergies,StudentAllergiesState } = useStudentAllergies();
   const { data: menuData, refetch: getDayMenu } = useGet<any[]>({
     path: 'MenuService/getMenuForTheDay',
   });
-  const { data: allergicStudentsData, refetch: getAllergicStudent } = useGet<any[]>({
-    path: `MenuService/GetStudentsAllergicByMenu?id=${menuData?.result.id}`,
-  });
+  // const { data: allergicStudentsData, refetch: getAllergicStudent } = useGet<any[]>({
+  //   path: `MenuService/GetStudentsAllergicByMenu?id=${menuData?.result?.id}`,
+  // });
 
   useEffect(() => {
     getallergicStudentsData();
     getDayMenu();
-    getStudents()
+    getStudents();
+    // getStudentAllergies();
   }, []);
 
   useEffect(() => {
     filterStudents();
   }, [searchText, FetchStatePerson]);
 
-  useEffect(() => {
-    if (allergicStudentsData) {
-      setAllergicStudents(allergicStudentsData);
-      console.log('count', allergicStudentsData.result.length);
-      console.log('students from  fetch',FetchStatePerson);
-    }
-  }, [allergicStudentsData]);
+  // useEffect(() => {
+  //   if (allergicStudentsData) {
+  //     setAllergicStudents(allergicStudentsData);
+  //     console.log('count', allergicStudentsData.result.length);
+  //     console.log('students from  fetch',FetchStatePerson);
+  //   }
+  // }, [allergicStudentsData]);
 
   useEffect(() => {
     fetchSpecialFood();
     fetchAlternativeFood();
+  }, []);
+  useEffect(() => {
+    if (StudentAllergiesState && StudentAllergiesState.length !== 0) {
+      getStudentAllergies(); 
+      setAllergicStudents(StudentAllergiesState);
+      // Fetch student allergies data if empty
+    }
   }, []);
   const columns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -129,14 +138,17 @@ const Students: React.FC = () => {
       const filteredStudents = FetchStatePerson.filter(
         (student: any) =>
           student.name.toLowerCase().includes(searchText.toLowerCase()) ||
-          student.surname.toLowerCase().includes(searchText.toLowerCase())
+          student.surname.toLowerCase().includes(searchText.toLowerCase())||
+          student.userName.toLowerCase().includes(searchText.toLowerCase())||
+          student.grade.toLowerCase().includes(searchText.toLowerCase())
+
       );
       setFilteredData(filteredStudents);
     }
   };
 
   return (
-    <Layout className="layout">
+    <MyLayout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
         <div className="demo-logo" />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
@@ -151,7 +163,7 @@ const Students: React.FC = () => {
             </Button>
         </div>
         <div className={styles.divRight}>
-          {/* Add your right content here */}
+          
         </div>
       </Content>
 
@@ -261,8 +273,8 @@ const Students: React.FC = () => {
       <Table columns={columns} dataSource={filteredData} loading={false} rowKey="id" />
 
       {/* <App /> */}
-    </Layout>
+    </MyLayout>
   );
 };
 
-export default Students;
+export default withAuth(Students);

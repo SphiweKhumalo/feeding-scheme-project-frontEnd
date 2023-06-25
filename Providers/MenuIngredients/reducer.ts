@@ -11,9 +11,11 @@ export function MenuReducer(incomingState: IMenuIngredientStateContext,action: R
         case MenuIngredientActionEnum.fetchMenuRequest:
             return {...incomingState,...payload}
             case MenuIngredientActionEnum.createMenuRequest:
-                return { ...incomingState, MenuIngredientState:[...incomingState?.MenuIngredientState,payload.MenuIngredientCreated,]};
+                return { ...incomingState, MenuIngredientState:[...incomingState?.MenuIngredientState,payload.MenuIngredientCreated]};
+                case MenuIngredientActionEnum.createMenuRequest:
+          return { ...incomingState, MenuIngredientState:[payload.MenuIngredientCreated,...incomingState?.MenuIngredientState]};
             case MenuIngredientActionEnum.deleteMenuIngredient:
-                const {MenuIngredientState}=payload;
+                const {MenuIngredientDeleted }=payload;
                 const filtered=[...incomingState?.MenuIngredientState].filter(({menuId})=>menuId!=MenuIngredientDeleted)
                 return { ...incomingState, MenuIngredientState:[...filtered]};
         default:

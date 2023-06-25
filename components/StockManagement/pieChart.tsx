@@ -6,6 +6,7 @@ import RcResizeObserver from "rc-resize-observer";
 import { useGet } from "restful-react";
 import { Router, useRouter } from "next/router";
 import { BarGraph, Graph } from "./GetBatchInformationByIngredient/App";
+import { url } from "inspector";
 
 const { Header, Content, Footer } = Layout;
 const { Text } = Typography;

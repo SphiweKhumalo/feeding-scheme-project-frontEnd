@@ -3,14 +3,8 @@ import { PersonReducer } from './reducer';
 import { INITIAL_STATE, IPerson, IPersonLogin, IPersonLogin2,PersonActionContext, PersonContext } from './AuthContext';
 import { createPersonRequestAction, getPersonsRequestAction, loginPersonRequestAction,getPersonsByIdRequestAction } from './actions';
 import { Button, Checkbox, Form, Input, message } from 'antd';
-import { json } from 'react-router-dom';
 import { useGet, useMutate } from 'restful-react';
 import axios from 'axios';
-
-
-
-///implement auth with high order component(c).
-///clear form after submitting (c)
 const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
@@ -21,36 +15,6 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
 }
 
   const [state, dispatch] = useReducer(PersonReducer, INITIAL_STATE);
-  // const token = localStorage.getItem('token');
-
-  // const createPerson = async (payload: IPerson) => {
-  //   const url = 'https://localhost:44311/api/services/app/User/Create';
-  //   const requestOptions: RequestInit = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(payload)
-  //   };
-
-  //   try {
-  //     const response = await fetch(url, requestOptions);
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(data);
-  //       localStorage.setItem('token', data.result.accessToken);
-  //       dispatch(createPersonRequestAction(data));    //dispatch result from backend rather(c).
-  //       message.error('Successfully Loggedin');
-  //     } else {
-  //       message.error('Invalid username or password');
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     message.error('Login failed');
-  //   }
-  // };
   const createPersonMutation = useMutate<any>({
     path: 'Student/Create',
     verb: 'POST',
@@ -121,7 +85,7 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
         localStorage.setItem('token', data.result.accessToken);
         dispatch(loginPersonRequestAction(data));
         message.error('Successfully Loggedin');
-        window.location.href = '../movie/MoviesTable'
+        window.location.href = '/Menu'
       } else {
         message.error('User cREATE Fail');
       }
@@ -130,6 +94,7 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
       message.error('User cREATE Fail');
     }
   };
+
 
   const loginPerson = async (payload: IPersonLogin) => {
     const authUrl = 'https://localhost:44311/api/TokenAuth/Authenticate';
@@ -168,7 +133,7 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
           const user = await userResponse.json();
           console.log(user);
           dispatch(loginPersonRequestAction(user));
-          window.location.href = '/MoviesTable'
+          window.location.href = '/Menu'
           message.error("Successfully Logged in");
           
         } else {
@@ -182,6 +147,8 @@ const PersonProvider: FC<PropsWithChildren> = ({ children }) => {
       message.error("Login failed");
     }
   }
+  
+  
   
   
 

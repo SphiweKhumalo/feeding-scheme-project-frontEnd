@@ -2,7 +2,8 @@
 {
     width: 200px;
     margin: 3rem;
-    border: 2px solid green;
+    /* border: 2px solid green; */
+    background-color:orange
 }
 
 .ContentContainer{
@@ -16,10 +17,10 @@ width:35rem;
 }
 .divRight {
     padding: 2rem;
-    border: 2px solid rgb(0, 38, 255);
+    /* border: 2px solid rgb(0, 38, 255); */
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
+    grid-template-columns: repeat(2, 12fr);
+    /* grid-gap: 0.2rem; */
   }
   
 .imageContainer

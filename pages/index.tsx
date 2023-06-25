@@ -1,11 +1,9 @@
 import Link from 'next/link'
 import Layout from '../components/Layout'
+import Login from './login'
 
 const IndexPage = () => (
-  
-  <Layout title="Home | Next.js + TypeScript Example">
-
-  </Layout>
+<Login />
 )
 
 export default IndexPage

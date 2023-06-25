@@ -1,10 +1,11 @@
 import React, { FC, PropsWithChildren, useReducer, useContext, useState, Children } from 'react';
 import { INITIAL_STATE, IMenu, MenuContext, MenuActionContext} from './context';
 import { MenuReducer } from './reducer';
-import { fetchMenuRequestAction,createMenuRequestAction } from './action';
+import { fetchMenuRequestAction,createMenuRequestAction, deleteMenuRequestAction } from './action';
 import { useGet, useMutate } from 'restful-react';
 import { useEffect } from 'react';
 import { message } from 'antd';
+import axios from 'axios';
 
 const MenuProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const [state, dispatch] = useReducer(MenuReducer, INITIAL_STATE);
@@ -12,6 +13,8 @@ const MenuProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const { data: menuData, refetch: getMenuHttp } = useGet({
     path: 'MenuService/GetAll',
   });
+
+
 
   const { mutate: createMenuHttp } = useMutate({
     path: 'MenuService/CreateMenu',
@@ -33,8 +36,9 @@ const MenuProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       const response = await createMenuHttp(payload);
       console.log("response::", response);
       if (response.success) {
-        message.success("User successfully created");
-        dispatch(createMenuRequestAction(response));
+        message.success("menu successfully created");
+        console.log('menu create response',response.result)
+        dispatch(createMenuRequestAction(response.result));
         // push('/login'); // Redirect to the login form
       } else {
         message.error("Failed to create Menu");
@@ -45,9 +49,24 @@ const MenuProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   };
 
+  const deleteMenu = async (id: string) => {
+    try {
+    const response = await axios.delete(`https://localhost:44311/api/services/app/MenuService/Delete?Id=${id}`);
+    if (response.data.success) {
+      dispatch(deleteMenuRequestAction(id));
+      message.success('Menu Deleted', response.data.result);
+    }
+    console.log('Menu deleted successfully');
+    // Handle success scenario
+  } catch (error) {
+    console.error('Error deleting menu:', error);
+    // Handle error scenario
+  }
+  };
+  
   return (
     <MenuContext.Provider value={state}>
-      <MenuActionContext.Provider value={{ createMenu,menusAction }}>
+      <MenuActionContext.Provider value={{ createMenu,menusAction,deleteMenu}}>
         {children} {/* Use the 'children' prop */}
       </MenuActionContext.Provider>
     </MenuContext.Provider>

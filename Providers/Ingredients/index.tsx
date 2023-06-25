@@ -49,7 +49,7 @@ const IngredientProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     try {
       const response = await createHttp(payload);
       if (response.success) {
-        dispatch(createIngredientRequestAction(response));
+        dispatch(createIngredientRequestAction(response.result));
         message.success("Ingredient added to  successfully");
 
       } else {

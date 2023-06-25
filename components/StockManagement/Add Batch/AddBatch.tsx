@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, DatePicker, Form, Input, Modal, Select, message } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useGet, useMutate } from 'restful-react';
-import MenuDropdown from '../../IngredientsList/ingredient';
+import MenuDropdown from '../../AddMenuIngredientsList/ingredient';
 import SupplierDropdown from '../../Suppliers/SupplierDropdown';
 import IngredientDropdown from '../../IngredientDropdown/IngredientDropdown';
 

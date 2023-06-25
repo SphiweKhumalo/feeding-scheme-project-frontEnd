@@ -1,31 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import { useGet } from 'restful-react';
 import { useIngredient } from '../../Providers/Ingredients';
+import { Ingredient } from '../../Providers/Ingredients/context';
 
 interface IngredientDropdownProps {
   onSelect: (value: string) => void;
 }
 
 const IngredientDropdown: React.FC<IngredientDropdownProps> = ({ onSelect }) => {
-  const { data: ingredientData, refetch: getIngredientsHttp } = useGet({
-    path: `IngredientService/GetAll`, // Replace 'API_URL' with your actual API endpoint for fetching ingredients
-  });
-  const{getIngredients,IngredientState}=useIngredient();
+  const { getIngredients, IngredientState } = useIngredient();
+  const [ingredient, setIngredients] = useState<Ingredient[]>();
+
   const handleChange = (value: string) => {
     onSelect(value);
   };
 
-  useEffect(()=>
-  {
+  useEffect(() => {
     getIngredients();
-  },[])
-  console.log('inger',IngredientState)
+      console.log('ingre', IngredientState);
+      setIngredients(IngredientState);
+    
+  },[]);
+
+  console.log('inger', IngredientState);
 
   return (
     <Select placeholder="Select an ingredient" onChange={handleChange}>
-      {/* Map over the ingredientData to render the dropdown options */}
-      {ingredientData?.result?.items.map((ingredient: any) => (
+      {/* Map over the ingredient state to render the dropdown options */}
+      {IngredientState?.map((ingredient: Ingredient) => (
         <Select.Option key={ingredient.id} value={ingredient.id}>
           {ingredient.name}
         </Select.Option>

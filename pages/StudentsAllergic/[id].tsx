@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Card, Modal } from 'antd';
 import { useRouter } from 'next/router';
 import { useGet } from 'restful-react';
+import withAuth from '../login/hoc/withAuth';
+import MyLayout from '../../components/Layout';
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
@@ -29,7 +31,7 @@ const StudentsAllergic: React.FC = () => {
   };
 
   return (
-    <Layout className="layout">
+    <MyLayout>
       <Header>
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
           <Item key="1">nav 1</Item>
@@ -91,8 +93,8 @@ const StudentsAllergic: React.FC = () => {
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-    </Layout>
+    </MyLayout>
   );
 };
 
-export default StudentsAllergic;
+export default withAuth(StudentsAllergic);
