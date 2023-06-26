@@ -62,30 +62,11 @@ const BatchInformation: React.FC<BatchCardProps> = () => {
   };
 
   const handleSave = async () => {
-   // try {
       const updatedBatch :IBatchInformation = {
         id: editingBatchId,
         quantity: editingQuantity
       };
         updateBatchInformation(updatedBatch);
-    //   const url = 'https://localhost:44311/api/services/app/BatchInformationService/UpdateBatchInformation';
-  
-    //   const response = await axios.put(url, updatedBatch);
-  
-    //   console.log('res result', response);
-  
-    //   if (response.status === 200) {
-    //     message.success('Batch information updated successfully');
-    //     closeModal();
-    //   } else {
-    //     // Handle the error case
-    //     message.error('Error updating batch information');
-    //     console.error('Error updating batch information:', response);
-    //   }
-    // } catch (error) {
-    //   message.error('Error updating batch information');
-    //   console.error('Error updating batch information:', error);
-    //}
   };
   
 

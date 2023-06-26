@@ -75,7 +75,7 @@ const columns = [
     title: 'Actions',
     key: 'actions',
     render: (text: any, record: any) => (
-      <Button type="link">
+      <Button type="diabled">
         View Details
       </Button>
     ),

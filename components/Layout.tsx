@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Button } from 'antd';
 import {
   DesktopOutlined,
   FileOutlined,
@@ -80,11 +80,14 @@ const MyLayout: React.FC = ({ children }) => {
               <Link href={item.path}>{item.title}</Link>
             </Menu.Item>
           ))}
+          <Menu.Item >
+            <Button type = 'primary' onClick={handleLogout}>Logout</Button>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout style ={{height:'100%',backgroundColor:'rgb(38, 48, 68)'}}>
         {children}
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>Created By Sphiwe Khumalo</Footer>
       </Layout>
     </Layout>
   );

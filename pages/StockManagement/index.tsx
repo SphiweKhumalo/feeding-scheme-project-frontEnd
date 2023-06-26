@@ -79,9 +79,9 @@ const StockManagement: React.FC = () => {
             <DepletingBatch />
           </section>
         </Card>
-        <Card style={{backgroundColor:'transparent'}}>
+        <Card style={{backgroundColor:'white'}}>
         <section className={styles.BarSection}>
-          <h1 style = {{color:'',fontStyle:'italic'}}>Stock Expiring In (5) Days</h1>
+          <h1 style = {{color:'red',fontStyle:'italic'}}>Stock Expiring In (5) Days</h1>
           <StockExpiringSoon />
         </section>
         <AddBatchPopup visible={popupVisible} onClose={handleClosePopup} onSubmit={handleFormSubmit} /> 

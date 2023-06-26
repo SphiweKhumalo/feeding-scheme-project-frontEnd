@@ -15,7 +15,7 @@ import {
   DeleteOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Col, Divider, Row, Card, Button, Modal, Form, Input, Tabs } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Col, Divider, Row, Card, Button, Modal, Form, Input, Tabs, Radio } from 'antd';
 import { IMenu } from '../../Providers/Menu/context';
 import { Console } from 'console';
 import StockManagement from '../StockManagement';
@@ -141,7 +141,6 @@ const MenuInfomration: React.FC = () => {
             </>
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
       <Modal
         visible={modalVisible}
         onCancel={handleModalCancel}
@@ -155,14 +154,26 @@ const MenuInfomration: React.FC = () => {
             <Input />
           </Form.Item>
           <Form.Item name="servingTime" label="Serving Time" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="day" label="Day" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="type" label="Type" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
+  <Radio.Group>
+    <Radio value={0}>Breakfast</Radio>
+    <Radio value={1}>Lunch</Radio>
+  </Radio.Group>
+</Form.Item>
+<Form.Item name="day" label="Day" rules={[{ required: true }]}>
+  <Radio.Group>
+    <Radio value={1}>Monday</Radio>
+    <Radio value={2}>Tuesday</Radio>
+    <Radio value={3}>Wednesday</Radio>
+    <Radio value={3}>Thursday</Radio>
+    <Radio value={3}>Friday</Radio>
+  </Radio.Group>
+</Form.Item>
+<Form.Item name="type" label="Type" rules={[{ required: true }]}>
+  <Radio.Group>
+    <Radio value={0}>Main</Radio>
+    <Radio value={1}>Altertnative</Radio>
+  </Radio.Group>
+</Form.Item>
           <Form.Item name="quantity"  label="Quantity" rules={[{ required: true }]}>
             <Input />
           </Form.Item>

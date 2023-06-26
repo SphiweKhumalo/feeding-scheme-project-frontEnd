@@ -36,16 +36,16 @@ const MenuProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       const response = await createMenuHttp(payload);
       console.log("response::", response);
       if (response.success) {
-        message.success("menu successfully created");
+        message.success("menu successfully created",1);
         console.log('menu create response',response.result)
         dispatch(createMenuRequestAction(response.result));
         // push('/login'); // Redirect to the login form
       } else {
-        message.error("Failed to create Menu");
+        message.error("Failed to create Menu",1);
       }
     } catch (error) {
       console.error("Menu creation error:", error);
-      message.error("An error occurred during menu creation");
+      message.error("An error occurred during menu creation",1);
     }
   };
 

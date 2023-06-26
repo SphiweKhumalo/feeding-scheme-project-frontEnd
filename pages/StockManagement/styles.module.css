@@ -9,24 +9,25 @@
      padding: '50px 50px' ;
      /* display: flex;
      flex-direction: row; */
+     background-image: url('/1108558_2212.jpg');
 }
 .divLeft {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     width: 100%;
     padding:6rem;
     height: auto;
-    /* background-color: rgb(38, 48, 68); */
+    background-color: rgba(255, 255, 255, 0.635);;
     display: fled;
     flex-direction: row;
     color: wheat;
-    background-image: url('/15694130_5583046.jpg');
+    /* background-image: url('/15694130_5583046.jpg'); */
   }
   
 .divRight {
     padding: 2rem;
-    border: 2px solid rgb(0, 38, 255);
+    /* border: 2px solid rgb(0, 38, 255); */
     width: 100%;
-    background-color: rgb(3, 18, 31);
+    /* background-color: rgb(3, 18, 31); */
     color: white;
     height: auto;
 }
@@ -42,8 +43,9 @@
 }
 
 .BarSection {
-    background-color: transparent;
-    border: 2px solid rgb(58, 9, 9);
+    background-color: rgba(255, 255, 255, 0.342);
+    /* border: 2px solid rgb(215, 35, 35); */
+    border-radius: 12px;
     width: auto;
     height:auto;
     display: flex;

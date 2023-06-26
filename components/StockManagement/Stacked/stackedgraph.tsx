@@ -15,25 +15,32 @@ const StackedGraph = () => {
     }
   }, [batchData]);
 
-  const createDatasets = () => {
-    const datasets = batchInformation.map((name) => {
-      const labels = name.batchInformation.map((batch) => batch.id);
-      const quantities = name.batchInformation.map((batch) => batch.quantity);
-      const expiryDates = name.batchInformation.map((batch) => batch.expiryDate); // Access expiryDate array
-      const formattedExpiryDates = expiryDates.join(', '); // Convert expiryDates array to a comma-separated string
-      const backgroundColor = getRandomColor();
-  
-      return {
-        label: `${name.name} (${formattedExpiryDates.slice(0,expiryDates.indexOf('T'))})`, // Use formattedExpiryDates in the label
-        data: quantities,
-        backgroundColor: backgroundColor,
-        borderColor: backgroundColor,
-        borderWidth: 1,
-        barThickness: 20,
-      };
+// ...
+
+const createDatasets = () => {
+  const datasets = batchInformation.map((name) => {
+    const dataset = {
+      label: name.name,
+      data: [],
+      backgroundColor: getRandomColor(),
+      borderColor: getRandomColor(),
+      borderWidth: 1,
+      barThickness: 20,
+    };
+
+    name.batchInformation.forEach((batch) => {
+      const { id, quantity } = batch;
+      dataset.data.push({ x: id, y: quantity });
     });
-    return datasets;
-  };
+
+    return dataset;
+  });
+
+  return datasets;
+};
+
+// ...
+
   
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
@@ -58,7 +65,7 @@ const StackedGraph = () => {
   }
 
   return (
-    <div style={{ width: '800px', height: '800px' }}>
+    <div style={{ width: '800px', height: '800px',backgroundColor:'transparent' }}>
       <h2>Batch Information</h2>
       <Bar data={chartData} />
     </div>

@@ -179,25 +179,7 @@ console.log('allergic',allergicStudents)
             ))}
           </Card>
 
-          <h2>Alternative Menu</h2>
-          <Card
-            title={alternativeMenu?.name}
-            cover={<img src={alternativeMenu?.imageUrl} alt={alternativeMenu?.name} />}
-           >
-            <p>Day: {alternativeMenu?.day}</p>
-            <p>Quantity: {alternativeMenu?.quantity}</p>
-            <p>Serving Time: {alternativeMenu?.servingTime}</p>
-            <p>Type: {alternativeMenu?.type}</p>
-            <p>ID: {alternativeMenu?.id}</p>
-            <Button type='primary' onClick={getAllergicToAlternative}>GetAllergic</Button>
-          </Card>
-          <h2>Special Food</h2>
-          <Card title="Special Food">{/* Render special food here */}</Card>
         </div>
-        <div className={styles.divRight}>{/* Add your right content here */}</div>
-      {/* </Content> */}<p>ads</p>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-
       {/* Modal */}
       {selectedStudent && (
         <Modal

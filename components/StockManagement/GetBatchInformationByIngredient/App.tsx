@@ -24,7 +24,7 @@ export function BatchInformationByIngredient() {
   });
 
   useEffect(() => {
-    fetchData(); // Fetch data from the API when the component mounts
+    fetchData(); 
   }, []);
 
   const colorPalette = [
@@ -38,7 +38,7 @@ export function BatchInformationByIngredient() {
     labels: apiData?.result.map(item => item.name) || [],
     datasets: apiData?.result.map((item, index) => ({
       data: item.batchInformation.map(batch => batch.quantity),
-      backgroundColor: colorPalette[index % colorPalette.length], // Assign a color from the colorPalette based on index
+      backgroundColor: colorPalette[index % colorPalette.length], 
     })) || [],
   };
 
