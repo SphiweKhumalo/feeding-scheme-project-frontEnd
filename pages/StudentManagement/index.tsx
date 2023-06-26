@@ -158,9 +158,11 @@ const Students: React.FC = () => {
       
       <Content className={styles.ContentContainer}>
         <div className={styles.divLeft}>      
-            <Button type="primary" onClick={handleAddStudentClick}>
-              Add Student
-            </Button>
+         <div className={styles.centerButton}>
+          <Button type="primary" onClick={handleAddStudentClick}>
+            Add Student
+         </Button>
+        </div>
         </div>
         <div className={styles.divRight}>
           
@@ -168,7 +170,6 @@ const Students: React.FC = () => {
       </Content>
 
       {/* Add Student Modal */}
-      // Add Student Modal
 <Modal
   title="Add Student"
   visible={addStudentVisible}
@@ -199,11 +200,11 @@ const Students: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item label="Role Name" name="roleNames" rules={[{ required: true, message: 'Please enter the role name' }]}>
+          <Form.Item label="User Type" name="roleNames" rules={[{ required: true, message: 'Please enter the role name' }]}>
             <Select mode="tags" placeholder="Select roles">
-              <Select.Option value="Admin">Admin</Select.Option>
-              <Select.Option value="User">User</Select.Option>
-              <Select.Option value="Guest">Guest</Select.Option>
+              <Select.Option value="Admin">Student</Select.Option>
+              {/* <Select.Option value="User">User</Select.Option>
+              <Select.Option value="Guest">Guest</Select.Option> */}
             </Select>
           </Form.Item>
           <Form.Item label="Gender" name="gender" rules={[{ required: true, message: 'Please select the gender' }]}>

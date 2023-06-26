@@ -11,7 +11,7 @@
      flex-direction: row; */
 }
 .divLeft {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     width: 100%;
     padding:6rem;
 
@@ -19,7 +19,7 @@
   
 .divRight {
     padding: 2rem;
-    border: 2px solid rgb(0, 38, 255);
+    /* border: 2px solid rgb(0, 38, 255); */
     width: 100%;
     background-color: rgb(3, 18, 31);
     color: white;
@@ -39,4 +39,10 @@
 {
     color: blue;
 }
+
+.centerButton {
+    display: flex;
+    justify-content: center;
+    
+  }
 
